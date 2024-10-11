@@ -1,0 +1,95 @@
+---
+title: "Modelo Projeto - Quarto"
+
+# Nome do documento PDF gerado
+output-file: titulo do projeto
+---
+```{r}
+#| include: false
+source("rdocs/source/packages.R")
+```
+
+```{r}
+# Rodar apenas uma vez na vida!
+## Instalando o tinytex(pacote apenas)
+### CRAN version
+#install.packages('tinytex')
+
+### or the development version on GitHub
+#remotes::install_github('rstudio/tinytex')
+
+## Baixando o tinytex
+library(tinytex)
+#tinytex::install_tinytex()
+```
+
+
+
+# Introdução
+
+# Referencial Teórico
+
+# Análises
+### 1. Top 5 países com maior número de mulheres medalhistas
+
+Os países que possuem um maior número de mulheres que conquistaram medalhas, em ordem do país com maior número de mulheres medalhistas para o país com menor número são respectivamente:
+
+1º- Estados Unidos: com o total de 146 medalhistas, sendo 65 medalhas de ouro, 42 de prata e 39 de bronze;
+
+2º-Rússica: com o total de 91 medalhistas, sendo 29 medalhas de ouro, 35 de prata e 27 de bronze;
+
+3º-Alemanha: com o total de 74 medalhistas, sendo 29 medalhas de ouro, 13 de prata e 32 de bronze;
+
+4º-China com o total de 64 medalhistas, sendo 36 medalhas de ouro, 18 de prata e 10 de bronze;
+
+5º-Austrália: com o total de 62 medalhistas, sendo 18 medalhas de ouro, 32 de prata e 12 de bronze.
+
+Para melhor vizualização, acompanhe o gráfico abaixo:
+```{r}
+#Top 5 países com maior número de mulheres medalhistas do maior número para o menor
+#Baixando pacotes
+library(openxlsx)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+
+#Lendo o banco de dados e traduzindo colunas para português
+banco_exel <- read.xlsx("~/Downloads/Olimpiadas 2000 - 2016.xlsx") %>%
+  rename(Gênero = 2, País = 6, Tipo = 9) %>%
+  mutate(Tipo = recode(Tipo, "Gold" = "Ouro", "Silver" = "Prata", "Bronze" = "Bronze"))
+
+#Criando o banco para criar o gráfico
+banco_grafico <- banco_exel %>%
+  filter(Gênero == "F") %>%  #Filtrando só mulheres
+  group_by(País, Tipo) %>%   #Agrupando os dados por país e tipo de medalha
+  summarise(Medalhas = n(), .groups = 'drop') %>% #Conta o número de medalhas por grupo e remove a estrutura de grupos
+  pivot_wider(names_from = Tipo, values_from = Medalhas, values_fill = 0) %>%  #Transforma os dados para que cada tipo de medalha seja uma coluna, preenchendo com 0 onde não há medalhas
+  mutate(Total = Ouro + Prata + Bronze)  #Total de medalhas por país
+
+# Top 5 países
+top_5_países <- banco_grafico %>%
+  arrange(desc(Total)) %>% #Ordena os países de forma decrescente segundo o total de medalhas
+  slice_head(n = 5) %>%  #Seleciona os 5 primeiros
+  pivot_longer(c(Ouro, Prata, Bronze), names_to = "Tipo", values_to = "Medalhas") %>%  #Transforma os dados pro formato longo
+  mutate(País = recode(País, 
+                       "United States" = "Estados Unidos", 
+                       "Russia" = "Rússia", 
+                       "Germany" = "Alemanha", 
+                       "China" = "China", 
+                       "Australia" = "Austrália")) %>% 
+  select(-2) #Removendo a coluna inútil
+
+# Gráfico de barras empilhadas
+ggplot(top_5_países, aes(x = reorder(País, -Total), y = Medalhas, fill = factor(Tipo, levels = c("Ouro", "Prata", "Bronze")))) + #Ordenando os países pelo total de medalhas
+  geom_col(position = "stack") + #Empilha as colunas
+  geom_text(aes(label = Medalhas), position = position_stack(vjust = 0.5), size = 4, color = "white") + #Rótulo no tipo de medalha
+  geom_text(aes(y = Total, label = Total), size = 4, color = "black", vjust = -0.5) + #Rótulo no total de medalha
+  labs(fill = "Tipo", x = "País", y = "Medalhas", title = "Top 5 países com maior número de mulheres medalhistas") + #Rótulos nos eixos e título
+  scale_fill_manual(values = c("Ouro" = "#A11D21", "Prata" = "#003366", "Bronze" = "#CC9900")) +
+  theme_estat()
+ggsave("barras-empilhadas.pdf", width = 158, height = 93, units = "mm")
+
+```
+
+
+# Conclusões
