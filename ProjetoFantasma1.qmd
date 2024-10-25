@@ -4,6 +4,7 @@ title: "Modelo Projeto - Quarto"
 # Nome do documento PDF gerado
 output-file: titulo do projeto
 ---
+
 ```{r}
 #| include: false
 source("rdocs/source/packages.R")
@@ -23,73 +24,470 @@ library(tinytex)
 #tinytex::install_tinytex()
 ```
 
-
-
 # Introdução
+
+O seguinte projeto tem como objetivo realizar uma análise estatística do desempenho dos atletas de elite da House of Excellence que participaram das Olimpíadas entre 2000 e 2016. As análises incluem estatísticas descritivas e comparações entre grupos, visando entender fatores como a performance das medalhistas mulheres, a variação do Índice de Massa Corporal (IMC) por esporte, o número de medalhas conquistadas por atletas destacados e a relação entre peso e altura.
+
+O banco de dados utilizado foi coletado pelo cliente, contendo informações sobre atletas e suas performances nas Olimpíadas, incluindo as variáveis nome, gênero, idade, altura, peso, país, esporte, evento, tipo de medalha e ano de conquista da medalha. A amostra é boa e inclui dados de diferentes países e esportes, proporcionando uma visão abrangente e probabilística do desempenho atlético. Essas informações são cruciais para as análises, permitindo uma compreensão mais profunda dos fatores que impactam o desempenho.
+
+Para a realização das análises, foi utilizado o software R, versão 4.2.0. Este software é amplamente reconhecido na comunidade estatística por suas capacidades de manipulação e visualização de dados, além de fornecer uma ampla gama de pacotes para análises estatísticas avançadas. A utilização do R garantiu a precisão e a eficácia na execução das análises propostas, assim como na geração de gráficos e relatórios visuais que complementam os resultados obtidos.
 
 # Referencial Teórico
 
 # Análises
+
 ### 1. Top 5 países com maior número de mulheres medalhistas
 
-Os países que possuem um maior número de mulheres que conquistaram medalhas, em ordem do país com maior número de mulheres medalhistas para o país com menor número são respectivamente:
-
-1º- Estados Unidos: com o total de 146 medalhistas, sendo 65 medalhas de ouro, 42 de prata e 39 de bronze;
-
-2º-Rússica: com o total de 91 medalhistas, sendo 29 medalhas de ouro, 35 de prata e 27 de bronze;
-
-3º-Alemanha: com o total de 74 medalhistas, sendo 29 medalhas de ouro, 13 de prata e 32 de bronze;
-
-4º-China com o total de 64 medalhistas, sendo 36 medalhas de ouro, 18 de prata e 10 de bronze;
-
-5º-Austrália: com o total de 62 medalhistas, sendo 18 medalhas de ouro, 32 de prata e 12 de bronze.
+O objetivo dessa análise é ver quais países possuem o maior número de mulheres que conquistaram medalhas, em ordem do país com maior número de mulheres medalhistas para o país com menor número. Para isso, foi criado um gráfico de barras verticais, ideal para analisar uma variável quantitativa discreta, que são valores enumeráveis como a quantidade de medalhas e uma variável qualitativa nominal que são os nomes dos países. No gráfico, a quantidade de medalhas está representava no eixo X e os países no eixo Y em ordem do maior número de mulheres medalhistas para o menor, quantificados por frequência relativa que é utilizada para a comparação entre classes de categorias, como os países.
 
 Para melhor vizualização, acompanhe o gráfico abaixo:
+
 ```{r}
-#Top 5 países com maior número de mulheres medalhistas do maior número para o menor
-#Baixando pacotes
+# Top 5 países com maior número de mulheres medalhistas do maior número para o menor
 library(openxlsx)
 library(dplyr)
-library(tidyr)
 library(ggplot2)
+library(tidyverse)
+library(forcats)
 
-#Lendo o banco de dados e traduzindo colunas para português
 banco_exel <- read.xlsx("~/Downloads/Olimpiadas 2000 - 2016.xlsx") %>%
   rename(Gênero = 2, País = 6, Tipo = 9) %>%
   mutate(Tipo = recode(Tipo, "Gold" = "Ouro", "Silver" = "Prata", "Bronze" = "Bronze"))
 
-#Criando o banco para criar o gráfico
 banco_grafico <- banco_exel %>%
-  filter(Gênero == "F") %>%  #Filtrando só mulheres
-  group_by(País, Tipo) %>%   #Agrupando os dados por país e tipo de medalha
-  summarise(Medalhas = n(), .groups = 'drop') %>% #Conta o número de medalhas por grupo e remove a estrutura de grupos
-  pivot_wider(names_from = Tipo, values_from = Medalhas, values_fill = 0) %>%  #Transforma os dados para que cada tipo de medalha seja uma coluna, preenchendo com 0 onde não há medalhas
-  mutate(Total = Ouro + Prata + Bronze)  #Total de medalhas por país
+  filter(Gênero == "F") %>%  
+  group_by(País, Tipo) %>%   
+  summarise(Medalhas = n(), .groups = 'drop') %>% 
+  pivot_wider(names_from = Tipo, values_from = Medalhas, values_fill = 0) %>%  
+  mutate(Total = Ouro + Prata + Bronze)  
 
 # Top 5 países
 top_5_países <- banco_grafico %>%
-  arrange(desc(Total)) %>% #Ordena os países de forma decrescente segundo o total de medalhas
-  slice_head(n = 5) %>%  #Seleciona os 5 primeiros
-  pivot_longer(c(Ouro, Prata, Bronze), names_to = "Tipo", values_to = "Medalhas") %>%  #Transforma os dados pro formato longo
+  arrange(desc(Total)) %>%
+  slice_head(n = 5) %>%  
+  select(País, Total) %>% 
   mutate(País = recode(País, 
-                       "United States" = "Estados Unidos", 
-                       "Russia" = "Rússia", 
-                       "Germany" = "Alemanha", 
-                       "China" = "China", 
-                       "Australia" = "Austrália")) %>% 
-  select(-2) #Removendo a coluna inútil
+                     "United States" = "Estados Unidos", 
+                     "Russia" = "Rússia", 
+                     "Germany" = "Alemanha", 
+                     "China" = "China", 
+                     "Australia" = "Austrália"))
 
-# Gráfico de barras empilhadas
-ggplot(top_5_países, aes(x = reorder(País, -Total), y = Medalhas, fill = factor(Tipo, levels = c("Ouro", "Prata", "Bronze")))) + #Ordenando os países pelo total de medalhas
-  geom_col(position = "stack") + #Empilha as colunas
-  geom_text(aes(label = Medalhas), position = position_stack(vjust = 0.5), size = 4, color = "white") + #Rótulo no tipo de medalha
-  geom_text(aes(y = Total, label = Total), size = 4, color = "black", vjust = -0.5) + #Rótulo no total de medalha
-  labs(fill = "Tipo", x = "País", y = "Medalhas", title = "Top 5 países com maior número de mulheres medalhistas") + #Rótulos nos eixos e título
-  scale_fill_manual(values = c("Ouro" = "#A11D21", "Prata" = "#003366", "Bronze" = "#CC9900")) +
+# Gráfico
+classes <- top_5_países %>%
+  mutate(freq = Total) %>%  
+  mutate(
+    relative_freq = round((freq / sum(freq)) * 100, 1),
+    freq = gsub("\\.", ",", relative_freq) %>% paste("%", sep = ""),
+    label = str_c(freq, " (", Total, ")", sep = "") %>% str_squish()  
+  )
+
+ggplot(classes) +
+  aes(x = fct_reorder(País, -Total), y = Total, label = label) + 
+  geom_bar(stat = "identity", fill = "#A11D21", width = 0.7) +
+  geom_text(
+    position = position_dodge(width = .9),
+    vjust = -0.5,
+    size = 3
+  ) +
+  labs(x = "País", y = "Frequência", title = "Top 5 Países com maior número de mulheres medalhistas") +
+  theme_estat()  
+
+ggsave("colunas-uni-freq.pdf", width = 158, height = 93, units = "mm")
+```
+
+É possível vizualizar que em primeiro lugar, está os Estados Unidos, com o total de 146 medalhistas, sendo 65 medalhas de ouro, 42 de prata e 39 de bronze, seguido da Rússia com o total de 91 medalhistas, sendo 29 medalhas de ouro, 35 de prata e 27 de bronze, seguido da Alemanha com o total de 74 medalhistas, sendo 29 medalhas de ouro, 13 de prata e 32 de bronze, seguida da China com o total de 64 medalhistas, sendo 36 medalhas de ouro, 18 de prata e 10 de bronze seguida da Austrália com o total de 62 medalhistas, sendo 18 medalhas de ouro, 32 de prata e 12 de bronze.
+
+Assim, é possível ver uma diferença significativa entre os 5 primeiros países, sendo os Estados Unidos com 55 medalhas a mais que o segundo colocado e 84 medalhas a mais que o quinto colocado, diferença maior que o dobro de suas medalhas. Além disso, os Estados Unidos tem mais medalhas que a soma do total de medalhas que a Alemanha e China juntas. Dessa forma, conclui-se que os Estados Unidos é um país que prepara com excelência as atletas para as Olimpíadas.
+
+Além disso, é possível vizualizar que não há diferença significativa entre a Alemanha, China e Austrália quanto o total de mulheres medalhistas, visto que sua diferença entre as medalhas é baixa. Dessa forma, esses países se equivalem na preparação de atletas medalhistas.
+
+Essa análise não apenas destaca a importância do investimento em esportes femininos, como enfatiza países com estratégias eficazes que podem ser implementadas para fomentar o sucesso de mulheres atletas em nível internacional. Portanto, enquanto os Estados Unidos estabelecem um padrão elevado, a competitividade entre Alemanha, China e Austrália também ressalta a crescente importância do esporte feminino globalmente.
+
+### 2. Valor IMC por esporte, estes sendo, ginástica, futebol, judô, atletismo e badminton
+
+O objetivo dessa análise é observar o IMC dos esportes selecionados, estes sendo, ginástica, futebol, judô, atletismo e badminton. Para isso, foi preciso calcular esse índice para cada atleta usando a fórmula peso (kg) / altura (m)2, agrupando o valor do IMC do atleta por esporte.
+
+O IMC é uma variável quantitativa contínua, ou seja apresenta valores resultados de medições, permitindo construir um gráfico boxplot para perceber de forma mais clara como os dados estão distribuídos, sendo a porção inferior do retângulo o primeiro quartil, enquanto a superior indica o terceiro quartil. Já o traço no interior do retângulo representa a mediana do conjunto de dados, ou seja, o valor em que o conjunto de dados é dividido em dois subconjuntos de mesmo tamanho. A média é representada pelo losango branco e os pontos são *outliers*, valores discrepantes da série de dados, ou seja, valores que não demonstram a realidade de um conjunto de dados.
+
+Por outro lado, o IMC é classificado de acordo com a seguinte tabela:
+
+```{=latex}
+\documentclass{article}
+\usepackage{booktabs}
+
+\begin{document}
+
+\title{Classificação do Índice de Massa Corporal (IMC)}
+\author{}
+\date{}
+\maketitle
+
+\begin{table}[h]
+    \centering
+    \caption{Tabela de Classificação do IMC}
+    \begin{tabular}{@{}lll@{}}
+        \toprule
+        \textbf{Categoria}          & \textbf{IMC Mínimo} & \textbf{IMC Máximo} \\ \midrule
+        Abaixo do peso             & 0                   & 18.4                 \\
+        Peso normal                & 18.5                & 24.9                 \\
+        Sobrepeso                  & 25                  & 29.9                 \\
+        Obesidade grau I          & 30                  & 34.9                 \\
+        Obesidade grau II         & 35                  & 39.9                 \\
+        Obesidade grau III        & 40                  & \textgreater  \\ \bottomrule
+    \end{tabular}
+\end{table}
+
+\end{document}
+```
+Assim, a variável categoria do IMC é qualitativa ordinal, permitindo construir um gráfico de barras verticais com a quantidade de atletas por categoria do IMC em cada esporte. Veja o gráfico abaixo:
+
+```{r}
+# Valor IMC por esporte (ginástica, futebol, judô, atletismo e badminton)
+# peso (kg) / altura (m)²
+
+# Baixando pacotes
+library(readxl)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(tidyverse)
+
+# Lendo o banco de dados
+banco_exel <- read_excel("~/Downloads/Olimpiadas 2000 - 2016.xlsx")
+
+# Renomeando colunas
+names(banco_exel)[4] <- "Altura_cm"
+names(banco_exel)[5] <- "Peso_libras"
+
+# Conversão de unidades
+banco_exel <- banco_exel %>%  
+  mutate(Peso = Peso_libras * 0.453592,  
+         Altura = Altura_cm / 100)
+
+# Filtrando os esportes desejados
+banco_exel <- banco_exel %>%  
+  mutate(Sport = recode(Sport,  
+                        "Rhythmic Gymnastics" = "Ginástica",
+                        "Football" = "Futebol",
+                        "Judo" = "Judô",
+                        "Athletics" = "Atletismo",
+                        "Badminton" = "Badminton"))
+
+# Calculando o IMC
+banco_exel <- banco_exel %>%
+  mutate(IMC = Peso / (Altura^2))
+
+esportes_selecionados <- c("Ginástica", "Futebol", "Judô", "Atletismo", "Badminton")
+
+# Filtrando apenas atletas medalhistas
+banco_restrito2 <- banco_exel %>%  
+  filter(Sport %in% esportes_selecionados, !is.na(Medal)) %>%  
+  select(Sport, Altura, Peso, IMC) %>%
+  na.omit() %>%
+  group_by(Sport) %>%
+  summarise(
+    media_IMC = mean(IMC, na.rm = TRUE),
+    mediana_IMC = median(IMC, na.rm = TRUE),
+    desvio_padrao_IMC = sd(IMC, na.rm = TRUE),
+    variancia_IMC = var(IMC, na.rm = TRUE),
+    min_IMC = min(IMC, na.rm = TRUE),
+    max_IMC = max(IMC, na.rm = TRUE),
+    q1_IMC = quantile(IMC, 0.25, na.rm = TRUE),
+    q3_IMC = quantile(IMC, 0.75, na.rm = TRUE)
+  ) %>%
+  arrange(desc(media_IMC))
+
+# Classificando o IMC
+banco_exel <- banco_exel %>%  
+  mutate(classificacao_IMC = case_when(
+    IMC < 18.5 ~ "Abaixo do peso",
+    IMC >= 18.5 & IMC < 25 ~ "Peso normal",
+    IMC >= 25 & IMC < 30 ~ "Sobrepeso",
+    IMC >= 30 & IMC < 35 ~ "Obesidade grau I",
+    IMC >= 35 & IMC < 40 ~ "Obesidade grau II",
+    IMC >= 40 ~ "Obesidade grau III")) %>%
+  filter(Sport %in% esportes_selecionados, !is.na(classificacao_IMC), !is.na(Medal)) %>%  # Adicionado filtro para medalhistas
+  mutate(Sport = factor(Sport, levels = c("Ginástica", "Atletismo", "Futebol", "Badminton", "Judô")),
+         classificacao_IMC = factor(classificacao_IMC,  
+                                    levels = c("Abaixo do peso",  
+                                               "Peso normal",  
+                                               "Sobrepeso",  
+                                               "Obesidade grau I",  
+                                               "Obesidade grau II",  
+                                               "Obesidade grau III")))
+
+
+# Corrigindo a forma de calcular a média
+classes2 <- banco_restrito2 %>%
+  mutate(freq = media_IMC) %>% 
+  mutate(relative_freq = round((freq / sum(freq)) * 100, 1),
+         freq = gsub("\\.", ",", relative_freq) %>% paste("%", sep = ""),
+         label = str_c(freq, " (", round(media_IMC, 2), ")", sep = "") %>% str_squish()
+  )
+
+# Boxplot do IMC por esporte
+ggplot(banco_exel %>% filter(Sport %in% esportes_selecionados),  
+       aes(x = Sport, y = IMC)) +  
+  geom_boxplot(fill = "#A11D21", width = 0.5) +  
+  stat_summary(fun = "mean", geom = "point", shape = 23, size = 3, fill = "white") +  
+  labs(title = "Distribuição do IMC por Esporte", x = "Esporte", y = "IMC") +  
+  theme_estat() 
+ggsave("gráfico_boxplot.pdf", width = 158, height = 93, units = "mm")
+
+# Gráfico com as colunas ordenadas pela classificação do IMC
+ggplot(banco_exel, aes(x = Sport, fill = classificacao_IMC)) +  
+  geom_bar(position = position_dodge(width = 0.8), width = 0.7) +  
+  labs(title = "Classificação do IMC por Esporte",  x = "Esporte", y = "Frequência") +  
+  geom_text(stat = 'count', aes(label = ..count..),  
+            position = position_dodge(width = 0.8),  
+            vjust = -0.5,  
+            hjust = 0.5,  
+            size = 3) +  
   theme_estat()
-ggsave("barras-empilhadas.pdf", width = 158, height = 93, units = "mm")
+ggsave("gráfico_colunas.pdf", width = 158, height = 93, units = "mm")
+```
+
+Além disso, criou-se um quadro de medidas resumo, tabela que apresenta estatísticas descritivas de um conjunto de dados, como média, mediana, moda, desvio padrão, quartis e extremos. Ele serve para fornecer uma visão rápida e concisa das características principais da distribuição dos dados, permitindo entender sua tendência central, variabilidade e forma, facilitando a comparação entre diferentes grupos, nesse caso, diferentes países. Segue o quadro abaixo:
+
+```{r}
+print_quadro_resumo <- function(banco_exel, IMC, title="Medidas resumo do IMC", label="quad:quadro_resumo1")
+{
+IMC <- substitute(IMC)
+data <- banco_exel %>%
+summarize(`Média` = round(mean(!!sym(IMC)),2),
+`Desvio Padrão` = round(sd(!!sym(IMC)),2),
+`Variância` = round(var(!!symimc),2),
+`Mínimo` = round(min(!!sym(IMC)),2),
+`1º Quartil` = round(quantile(!!sym(IMC), probs =
+.25),2),
+`Mediana` = round(quantile(!!sym(IMC), probs = .5)
+,2),
+`3º Quartil` = round(quantile(!!sym(IMC), probs =
+.75),2),
+`Máximo` = round(max(!!sym(IMC)),2)) %>%
+t() %>%
+as.data.frame() %>%
+rownames_to_column()
+latex <- str_c("\\begin{quadro}[H]
+\t\\caption{", title, "}
+\t\\centering
+\t\\begin{adjustbox}{max width=\\textwidth}
+\t\\begin{tabular}{", sep="")
+col_count <- ncol(banco_exel)
+row_count <- nrow(banco_exel)
+latex <- str_c(latex, "| l |\n", sep=" ")
+for (i in seq(2, col_count))
+{
+numCount <- banco_exel[i, -c(1)] %>%
+as.numeric() %>%
+{floor(log10(.)) + 1} %>%
+max()
+latex <- str_c(latex, "\t\t\tS[table-format = ", numCount ,".2]\n
+", sep="")
+}
+latex <- str_c(latex, "\t\t\t|}\n\t\\toprule\n\t\t", sep="")
+if (col_count > 2)
+{
+for (i in seq(1,col_count))
+{
+if (i == 1)
+latex <- str_c(latex, "\\textbf{Estatística}", sep="")
+else
+latex <- str_c(latex, " \\textbf{", data[1, i], "}", sep="")
+if (i < col_count)
+latex <- str_c(latex, "&", sep=" ")
+else
+latex <- str_c(latex, "\\\\\n", sep=" ")
+}
+}
+else
+{
+latex <- str_c(latex, "\\textbf{Estatística} & \\textbf{Valor}
+\\\\\n", sep="")
+}
+latex <- str_c(latex, "\t\t\\midrule\n", sep="")
+if (col_count > 2)
+starting_number <- 2
+else
+starting_number <- 1
+for (i in seq(starting_number, row_count))
+{
+latex <- str_c(latex, "\t\t", str_flatten(t(data[i,]), collapse =
+" & "), " \\\\\n")
+}
+latex <- str_c(latex, "\t\\bottomrule
+\t\\end{tabular}
+\t\\label{", label, "}
+\t\\end{adjustbox}
+\\end{quadro}", sep="")
+writeLines(latex)
+}
+
+banco_exel %>%
+group_by(Sport) %>% 
+  print_quadro_resumo(IMC = displ)
 
 ```
 
+Para ver se os dados do IMC seguem uma distribuição normal, ou seja, se a média, a mediana e a moda são iguais e estão localizadas no centro da distribuição, foi usado o teste de Shapiro-Wilk, sendo a hipótese nula os dados seguindo a distribuição normal e a hipótese alternativa eles não seguindo a distribuição normal. O resultado do teste com 5% de nível de significância revelou que os dados não estão em conformidade com a distribuição normal. Portanto, os dados são não paramétricos.
+
+Assim, para verificar se as médias do IMC dos esportes são iguais, foi realizado o teste de Kruskal-Wallis, comparando os 5 esportes sem supor nenhuma distribuição. É um método baseado na comparação de postos, os quais são atribuídos a cada observação de uma variável quantitativa após serem ordenadas. A hipótese nula é que não há diferença significativa nos valores de IMC entre os diferentes esportes, ou seja, todos esportes têm a mesma distribuição de IMC e a hipótese alternatina é que há pelo menos uma diferença significativa nos valores de IMC entre os diferentes esportes, ou seja, pelo menos um grupo esporte tem uma distribuição de IMC diferente dos demais.
+
+Os resultados do teste de Kruskal-Wallis indicam que há uma diferença significativa nos valores de IMC entre os diferentes esportes, com um valor de p extremamente baixo (p \< 0,00000000000000022), o que nos leva a rejeitar a hipótese nula. A estatística de Kruskal-Wallis foi de 96,639, com 4 graus de liberdade, evidenciando uma variação significativa nas distribuições do IMC conforme o esporte praticado. No entanto, ao realizar o teste post-hoc de Dunn, não foram encontrados resultados, sugerindo que, apesar da diferença geral entre os grupos, as comparações específicas entre os esportes podem não ter gerado evidências suficientes para identificar quais pares de grupos diferem significativamente entre si. Isso pode ocorrer devido à variabilidade nas amostras ou à necessidade de mais dados para obter resultados robustos nas comparações específicas. É importante considerar esses aspectos ao interpretar os dados, pois mesmo com a diferença geral, as relações específicas podem exigir uma análise mais aprofundada.
+
+```{r}
+#Teste de Shapiro-Wilk
+resultado <- shapiro.test(banco_exel$IMC)
+print(resultado)
+
+#Interpretando o resultado
+if (resultado$p.value > 0.05) {
+  cat("Os dados seguem uma distribuição normal (não rejeitamos a hipótese nula).\n")
+} else {
+  cat("Os dados não seguem uma distribuição normal (rejeitamos a hipótese nula).\n")
+}
+```
+
+```{r}
+library(dplyr)
+library(dunn.test)
+library(tidyr)
+library(ggsignif)
+library(ggplot2)
+
+# Teste Kruskal-Wallis
+imc_por_esporte <- banco_exel %>%
+  group_by(Sport) %>%
+  summarise(IMC = list(IMC))
+
+imc_long <- imc_por_esporte %>%
+  unnest(IMC)
+
+# Interpretando o resultado
+resultado_KW <- kruskal.test(IMC ~ Sport, data = imc_long)
+
+if (resultado_KW$p.value > 0.05) {
+  cat("Não há diferença significativa nos valores de IMC entre os diferentes esportes (não rejeitamos a hipótese nula).\n")
+} else {
+  cat("Há diferença significativa nos valores de IMC entre os diferentes esportes (rejeitamos a hipótese nula).\n")
+}
+
+print(resultado_KW)
+
+# Se a hipótese nula for rejeitada, fazer o teste Post-Hoc de Dunn
+if (resultado_KW$p.value < 0.05) {
+  resultado_dunn <- dunn.test(imc_long$IMC, imc_long$Sport, method = "bh")  # "bh" para correção de Benjamini-Hochberg
+  print(resultado_dunn)
+  cat("Resultados do teste Post-Hoc de Dunn:\n")
+  if (!is.null(resultado_dunn$res)) {
+    for (i in 1:nrow(resultado_dunn$res)) {
+      cat(sprintf("Comparação: %s, Z = %.3f, p-valor ajustado = %.3f", 
+                  resultado_dunn$res[i, "Comparação"], 
+                  resultado_dunn$res[i, "Z"], 
+                  resultado_dunn$res[i, "P.ajustado"]))
+      if (resultado_dunn$res[i, "P.ajustado"] < 0.05) {
+        cat(" (Significativo)\n")
+      } else {
+        cat(" (Não significativo)\n")
+      }
+    }
+  } else {
+    cat("Não foram encontrados resultados para o teste de Dunn.\n")
+  }
+} else {
+  cat("Não há evidências suficientes para realizar o teste Post-Hoc (p-valor > 0.05).\n")
+}
+```
+
+Verifica-se pelo gráfico boxplot que há muitos outliers, que são valores em extremo que afetam a observação geral, no Atletismo e Judô, mostrando que há mais atletas com maior IMC nesses esportes.
+
+A partir do gráfico vemos que 20 atletas da ginástica estão abaixo do peso, representando 95,24% do total de ginastas abaixo do peso. Para o atletismo, há 7,78% de atletas abaixo do peso, 77,22% no peso normal, 10, 55% em sobrepeso e 4,44% em obesidade. Já no futebol, 96% dos atletas estão com peso normal e 3,86% em sobrepeso. No badminton 95,83% estão com peso normal e 4,17% em sobrepeso. E no judô temos 53% de atletas no peso normal, 28,57% em sobrepeso e 17,86% em obesidade.
+
+Em conclusão, a análise do IMC dos atletas dos esportes selecionados revela padrões significativos em relação à composição corporal de cada grupo. Os dados indicam que os atletas de ginástica apresentam um IMC médio inferior ao peso normal, enquanto os atletas de judô estão, em média, acima desse padrão, com uma diferença notável entre os dois. Por outro lado, os atletas de atletismo, futebol e badminton apresentam IMCs dentro da faixa normal, evidenciando uma distribuição saudável.Os outliers observados, especialmente em atletismo e judô, indicam a presença de atletas com IMCs significativamente elevados, o que pode refletir a diversidade nas categorias de peso e nas características físicas dos atletas.
+
+Esses resultados sugerem a necessidade de uma avaliação cuidadosa das exigências físicas de cada esporte e a importância de estratégias nutricionais e de treinamento adequadas para promover a saúde e o desempenho atlético. A análise do IMC não apenas fornece insights sobre a condição física dos atletas, mas também pode informar decisões sobre intervenções que visem melhorar a saúde e o bem-estar dentro dessas modalidades esportivas.
+
+### 3. Top 3 medalhistas gerais por quantidade de cada tipo de medalha
+
+O objetivo dessa análise e entender quais são os 3 medalhistas com maior número de medalhas no total, observar entre eles a quantidade de cada tipo de medalha que cada um conquistou e se existe relação entre o medalhista e cada tipo de medalha conquistada. Para isso, foi contruida uma tabela com a quantidade de medalhas e seu total para os top 3 medalhistas e criado um gráfico de barras empilhadas para vizualizar visualmente a proporção do tipo de medalhas no total de medalhas de cada atleta, sendo essa uma variável quantitativa discreta.
+
+Para avaliar se há relação entre o medalhista e cada tipo de medalha conquistada, ou seja, se o medalhista e o tipo de medalha são variáveis independentes, usou-se o teste de hipótese de Fisher, utilizado quando se quer testar a independência de variáveis com poucos dados de observação.
+
+```{r}
+#Entender quais são os 3 medalhistas com maior número de medalhas no total, 
+#Entre eles, observar a quantidade de cada tipo de medalha que cada um conquistou.
+#Existe relação entre o medalhista e cada tipo de medalha conquistada?
+library(dplyr)
+library(tidyr)
+library(kableExtra)
+library(ggplot2)
+
+banco_restrito3 <- banco_exel %>%
+  group_by(Names, Tipo) %>%
+  summarise(Medalhas = n(), .groups = 'drop') %>%
+  pivot_wider(names_from = Tipo, values_from = Medalhas, values_fill = list(Medalhas = 0)) %>%
+  mutate(Total = coalesce(Ouro, 0) + coalesce(Prata, 0) + coalesce(Bronze, 0)) %>%
+  select(-which(names(.) == "NA"))
+
+
+# Top 3 atletas
+top_3 <- banco_restrito3 %>%
+  arrange(desc(Total)) %>%
+  slice_head(n = 3) %>%  
+  select(Names, Bronze, Prata, Ouro, Total)
+```
+
+```{r}
+#Tabela
+tabela_top3 <- top_3 %>%
+  kable("latex", booktabs = TRUE, caption = "Tabela: Top 3 Atletas por Medalhas") %>%
+  kable_styling(latex_options = c("striped", "hold_position")) %>%
+  add_header_above(c(" " = 1, "Medalhas" = 4)) %>%
+  add_row(Names = "\\textbf{Total}", Bronze = sum(top_3$Bronze), Prata = sum(top_3$Prata), Ouro = sum(top_3$Ouro), Total = sum(top_3$Total)) %>%
+  row_spec(nrow(top_3) + 1, bold = TRUE) %>%
+  add_header_above(c(" " = 1, "Medalhas" = 4)) %>%
+  row_spec(0, bold = TRUE) %>%
+  column_spec(1, bold = TRUE) %>%
+  column_spec(2:5, format = "d") %>%
+  add_line(c(" ", "\\midrule")) %>%
+  row_spec(0, bold = TRUE) %>%
+  row_spec(nrow(top_3) + 1, bold = TRUE) 
+print(tabela_top3)
+```
+
+```{r}
+medalhas_longas <- top_3 %>%
+  select(Names, Bronze, Prata, Ouro)  %>%
+  pivot_longer(cols = c(Bronze, Prata, Ouro,), 
+               names_to = "Tipo", 
+               values_to = "Quantidade") 
+#Gráfico
+ggplot(medalhas_longas, aes(x = reorder(Names, -Quantidade), y = Quantidade, fill = factor(Tipo, levels = c("Ouro", "Prata", "Bronze")))) +
+  geom_bar(stat = "identity") +  
+  labs(title = "Top 3 medalhistas gerais por quantidade de cada tipo de medalha",
+       x = "Atleta",
+       y = "Quantidade de medalhas",
+       fill = "Tipo de Medalha") +
+  theme_minimal() 
+```
+
+```{r}
+# Teste de Fisher
+tabela_contingencia <- medalhas_longas %>%
+  group_by(Names, Tipo) %>%
+  summarise(total_medalhas = sum(Quantidade), .groups = 'drop') %>%
+  pivot_wider(names_from = Tipo, values_from = total_medalhas)
+
+tabela_fisher <- as.matrix(tabela_contingencia[,-1])
+resultado_fisher <- fisher.test(tabela_fisher)
+print(resultado_fisher)
+
+if (resultado_fisher$p.value < 0.05) {
+  cat("Não há relação entre o medalhista e o tipo de medalha conquistada (são independentes) (rejeitamos a hipótese nula).\n")
+} else {
+  cat("Há relação entre o medalhista e o tipo de medalha conquistada (não são independentes) (não rejeitamos a hipótese nula).\n")
+}
+```
 
 # Conclusões
