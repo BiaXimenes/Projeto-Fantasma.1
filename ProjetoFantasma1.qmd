@@ -1,8 +1,8 @@
 ---
-title: "House of Excellence"
+title: "Análise do desempenho dos atletas de elite"
 
 # Nome do documento PDF gerado
-output-file: House of Excellence
+output-file: Análise do desempenho dos atletas de elite
 ---
 
 ```{r}
@@ -428,26 +428,10 @@ O objetivo dessa análise é observar o IMC dos esportes selecionados, estes sen
 
 O IMC é uma variável quantitativa contínua, ou seja apresenta valores resultados de medições, permitindo construir um boxplot para perceber de forma mais clara como os dados estão distribuídos, sendo a porção inferior do retângulo o primeiro quartil, enquanto a superior indica o terceiro quartil. Já o traço no interior do retângulo representa a mediana do conjunto de dados, ou seja, o valor em que o conjunto de dados é dividido em dois subconjuntos de mesmo tamanho. A média é representada pelo losango branco e os pontos são outliers, valores discrepantes da série de dados, ou seja, valores que não demonstram a realidade de um conjunto de dados.
 
-Por outro lado, o IMC é classificado de acordo com a tabela a seguir. Assim, a variável categoria do IMC é qualitativa ordinal, permitindo construir um gráfico de barras com a quantidade de atletas por categoria do IMC em cada esporte. Além disso, criou-se um quadro de medidas resumo, tabela que apresenta estatísticas descritivas de um conjunto de dados, como média, mediana, moda, desvio padrão, quartis e extremos. Ele serve para fornecer uma visão rápida e concisa das características principais da distribuição dos dados, permitindo entender sua tendência central, variabilidade e forma, facilitando a comparação entre diferentes grupos, nesse caso, diferentes países.
+Por outro lado, o IMC é classificado em 6 categorias: Abaixo do peso, Peso normal, Sobrepeso, Obesidade grau I, Obesidade grau II e Obesidade grau II. Assim, a variável categoria do IMC é qualitativa ordinal, permitindo construir um gráfico de barras com a quantidade de atletas por categoria do IMC em cada esporte. Além disso, criou-se um quadro de medidas resumo, tabela que apresenta estatísticas descritivas de um conjunto de dados, como média, mediana, moda, desvio padrão, quartis e extremos. Ele serve para fornecer uma visão rápida e concisa das características principais da distribuição dos dados, permitindo entender sua tendência central, variabilidade e forma, facilitando a comparação entre diferentes grupos, nesse caso, diferentes países.
 
 Para ver se os dados do IMC seguem uma distribuição normal, ou seja, se a média, a mediana e a moda são iguais e estão localizadas no centro da distribuição, foi usado o teste de Shapiro-Wilk. E com seu resultado, foi realizado o teste de Kruskal-Wallis para ver se há uma diferença significativanos valores de IMC entre os diferentes esportes.
 
-::: {#tbl-tex-IMC layout-align="center" tbl-pos="H"}
-```{=latex}
-\begin{tabular}{l|rr}
-\hline
-\toprule
-        \textbf{Categoria}          & \textbf{IMC Mínimo} & \textbf{IMC Máximo} \\ \midrule
-        Abaixo do peso             & 0                   & 18.4                 \\
-        Peso normal                & 18.5                & 24.9                 \\
-        Sobrepeso                  & 25                  & 29.9                 \\
-        Obesidade grau I          & 30                  & 34.9                 \\
-        Obesidade grau II         & 35                  & 39.9                 \\
-        Obesidade grau III        & 40                  & \textgreater  \\ \bottomrule 
-\end{tabular}
-```
-Tabela do IMC
-:::
 
 ```{r}
 # Valor IMC por esporte (ginástica, futebol, judô, atletismo e badminton)
@@ -543,9 +527,9 @@ Gráfico de colunas da classificação do IMC
             S[table-format = 2.2]
             S[table-format = 2.2]
             |}
-    \toprule
+      \toprule
         \textbf{Estatística} & \textbf{Ginástica} & \textbf{Atletismo} & \textbf{Futebol} & \textbf{Badminton} & \textbf{Judô} \\
-        \midrule
+      \midrule
         Média & 20.68 & 22.30 & 22.51 & 22.21 & 25.70 \\
         Desvio Padrão & 2.38 & 3.86 & 1.73 & 1.50 & 5.12 \\
         Variância &  5.67 & 14.92 &  2.99 &  2.26 & 26.23 \\
@@ -572,16 +556,16 @@ Medidas resumo do IMC
 ::: {#quad-teste_hipotese1 layout-align="center" quad-pos="H"}
 ```{=latex}
 \begin{quadro}[H]
-\centering
-\caption{P-valor do Teste de Shapiro-Wilk do IMC}
-\begin{tabular}{lc c c}
-    \toprule
-    \textbf{Variável} & \textbf{P-valor} & \textbf{Decisão do teste} \\
-    \midrule
-    IMC & \pvalor{0.05} & Não rejeita $H_0$ \\
-    \bottomrule
-\end{tabular}
-\label{quad:teste_hipotese1}
+    \centering
+    \caption{P-valor do Teste de Shapiro-Wilk do IMC}
+    \begin{tabular}{lc c c}
+          \toprule
+          \textbf{Variável} & \textbf{P-valor} & \textbf{Decisão do teste} \\
+          \midrule
+          IMC & \pvalor{0.05} & Não rejeita $H_0$ \\
+          \bottomrule
+    \end{tabular}
+    \label{quad:teste_hipotese1}
 \end{quadro}
 ```
 P-valor do teste de normalidade Shapiro-Wilk
@@ -826,7 +810,7 @@ ggsave("boxplot_peso.pdf", width = 158, height = 93, units = "mm")
 Gráfico boxplot do peso
 :::
 
-::: {#quad-quadro_resumo2 layout-align="center" quad-pos="H"}
+::: {#quad-quadro_resumo3 layout-align="center" quad-pos="H"}
 ```{=latex}
 \begin{quadro}[H]
     \caption{Medidas resumo do peso}
