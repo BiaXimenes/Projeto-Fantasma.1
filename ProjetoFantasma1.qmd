@@ -14,13 +14,11 @@ source("rdocs/source/packages.R")
 
 O seguinte projeto tem como objetivo realizar uma análise estatística do desempenho dos atletas de elite da House of Excellence que participaram das Olimpíadas entre 2000 e 2016. As análises incluem estatísticas descritivas e comparações entre grupos, visando entender fatores como a performance das medalhistas mulheres, a variação do Índice de Massa Corporal (IMC) por esporte, o número de medalhas conquistadas por atletas destacados e a relação entre peso e altura.
 
-O banco de dados utilizado foi coletado pelo cliente, contendo informações sobre atletas e suas performances nas Olimpíadas, incluindo as variáveis nome, gênero, idade, altura, peso, país, esporte, evento, tipo de medalha e ano de conquista da medalha. A amostra é boa e inclui dados de diferentes países e esportes, proporcionando uma visão abrangente e probabilística do desempenho atlético. Essas informações são cruciais para as análises, permitindo uma compreensão mais profunda dos fatores que impactam o desempenho.
+O banco de dados utilizado foi coletado pelo cliente, contendo informações sobre atletas e suas performances nas Olimpíadas, incluindo as variáveis nome, gênero, idade, altura, peso, país, esporte, evento, tipo de medalha e ano de conquista da medalha. A amostra inclui dados de diferentes países e esportes, proporcionando uma visão abrangente e probabilística do desempenho atlético. Essas informações são cruciais para as análises, permitindo uma compreensão mais profunda dos fatores que impactam o desempenho.
 
 Para a realização das análises, foi utilizado o software R, versão 4.2.0. Este software é amplamente reconhecido na comunidade estatística por suas capacidades de manipulação e visualização de dados, além de fornecer uma ampla gama de pacotes para análises estatísticas avançadas. A utilização do R garantiu a precisão e a eficácia na execução das análises propostas, assim como na geração de gráficos e relatórios visuais que complementam os resultados obtidos.
 
 # Referencial Teórico
-
-# Análise Descritiva Univariada
 
 ## Frequência Relativa
 
@@ -178,18 +176,15 @@ As variáveis quantitativas são as variáveis numéricas, que representam carac
 -   **Discretas**: quando os possíveis valores são enumeráveis (exemplos: número de filhos, número de cigarros fumados, etc)
 -   **Contínuas**: quando os possíveis valores são resultado de medições (exemplos: massa, altura, tempo, etc)
 
-# Definição para Testes
+## Definição para Testes
 
-## Teste de Hipóteses
+### Teste de Hipóteses
 
-O teste de hipóteses tem como objetivo fornecer uma metodologia para verificar se os dados das amostras possuem indicativos que comprovem, ou não, uma hipótese previamente formulada. Ele é composto por duas hipóteses:
+O teste de hipóteses tem como objetivo fornecer uma metodologia para verificar se os dados das amostras possuem indicativos que comprovem, ou não, uma hipótese previamente formulada. Ele é composto por duas hipóteses: \hipoteses{hipótese a ser testada (chamada de hipótese nula)}{hipótese alternativa que será aceita caso a hipótese nula seja rejeitada}
 
-```{=latex}
-\hipoteses{hipótese a ser testada (chamada de hipótese nula)}{hipótese alternativa que será aceita caso a hipótese nula seja rejeitada}
-```
 Essa decisão é tomada por meio da construção de uma região crítica, ou seja, região de rejeição do teste.
 
-## Tipos de teste: bilateral e unilateral
+### Tipos de teste: bilateral e unilateral
 
 Para a formulação de um teste, deve-se definir as hipóteses de interesse. Em geral, a hipótese nula é composta por uma igualdade (por exemplo, $H_{0}: \theta = \theta_{0}$). Já a hipótese alternativa depende do grau de conhecimento que se tem do problema em estudo. Assim, tem-se três formas de elaborar $H_{1}$ que classificam os testes em duas categorias:
 
@@ -199,9 +194,11 @@ Para a formulação de um teste, deve-se definir as hipóteses de interesse. Em 
     $$ H_{1}: \theta \neq \theta_{0} $$
 
 -   **Teste Unilateral**:\
-    Dependendo das informações que o pesquisador possui a respeito do problema e os questionamentos que possui, a hipótese alternativa pode ser feita de forma a verificar se existe diferença entre os parâmetros em um dos sentidos. Ou seja:
+    Dependendo das informações que o pesquisador possui a respeito do problema e os questionamentos que possui, a hipótese alternativa pode ser feita de forma a verificar se existe diferença entre os parâmetros em um dos sentidos. Ou seja: $$ H_{1}: \theta < \theta_{0} $$ ou $$ H_{1}: \theta > \theta_{0} $$\
 
-    $$ H_{1}: \theta < \theta_{0} $$ ou $$ H_{1}: \theta > \theta_{0} $$ \## Tipos de Erros Ao realizar um teste de hipóteses, existem dois erros associados: **Erro do Tipo I** e **Erro do Tipo II**.
+### Tipos de Erros
+
+Ao realizar um teste de hipóteses, existem dois erros associados: **Erro do Tipo I** e **Erro do Tipo II**.
 
 -   **Erro do Tipo I**:\
     Esse erro é caracterizado por rejeitar a hipótese nula ($H_{0}$) quando essa é verdadeira. A probabilidade associada a esse erro é denotada por $\alpha$, também conhecido como nível de significância do teste.
@@ -209,65 +206,56 @@ Para a formulação de um teste, deve-se definir as hipóteses de interesse. Em 
 -   **Erro do Tipo II**:\
     Ao não rejeitar $H_{0}$ quando, na verdade, é falsa, está sendo cometido o **Erro do Tipo II**. A probabilidade de se cometer este erro é denotada por $\beta$.
 
-## Nível de significância ($\alpha$)
+### Nível de significância ($\alpha$)
 
 O nível de significância do teste é o nome dado à probabilidade de se rejeitar a hipótese nula quando essa é verdadeira; essa rejeição é chamada de **erro do tipo I**. O valor de $\alpha$ é fixado antes da extração da amostra e, usualmente, assume 5%, 1% ou 0,1%.
 
 Por exemplo, um nível de significância de $\alpha=0,05$ (5%) significa que, se for tomada uma grande quantidade de amostras, em 5% delas a hipótese nula será rejeitada quando não havia evidências para essa rejeição, isto é, a probabilidade de se tomar a decisão correta é de 95%.
 
-## Estatística do Teste
+### Estatística do Teste
 
 A estatística do teste é o estimador que será utilizado para testar se a hipótese nula ($H_{0}$) é verdadeira ou não. Ela é escolhida por meio das teorias estatísticas.
 
-## P-valor
+### P-valor
 
 O **P-valor**, ou nível descritivo, é uma medida utilizada para sintetizar o resultado de um teste de hipóteses. Ele também pode ser chamado de *probabilidade de significância* do teste e indica a probabilidade de se obter um resultado da estatística de teste mais extremo do que o observado na presente amostra, considerando que a hipótese nula é verdadeira. Dessa forma, rejeita-se $H_{0}$ quando $P\text{-valor} < \alpha$, porque a chance de uma nova amostra possuir valores tão extremos quanto o encontrado é baixa, ou seja, há evidências para a rejeição da hipótese nula.
 
-## Intervalo de Confiança
+### Intervalo de Confiança
 
 Quando calcula-se um estimador pontual para o parâmetro, não é possível definir qual a possível magnitude do erro que se está cometendo. Com o objetivo de associar um erro à estimativa, são construídos os intervalos de confiança que se baseiam na distribuição amostral do estimador pontual.
 
-Dessa forma, considere $T$ um estimador pontual para $\theta$ e que a distribuição amostral de $T$ é conhecida. O intervalo de confiança para o parâmetro $\theta$ será dado por $t_{1}$ e $t_{2}$, tal que:
-
-$$ P(t_{1} < \theta < t_{2}) = \gamma $$
+Dessa forma, considere $T$ um estimador pontual para $\theta$ e que a distribuição amostral de $T$ é conhecida. O intervalo de confiança para o parâmetro $\theta$ será dado por $t_{1}$ e $t_{2}$, tal que: $$ P(t_{1} < \theta < t_{2}) = \gamma $$
 
 A probabilidade $\gamma$ é estabelecida no início do estudo e representa o nível de confiança do intervalo. A interpretação desse resultado é que, se forem tiradas várias amostras de mesmo tamanho e forem calculados intervalos de confiança para cada uma, $100 \times \gamma \%$ dos intervalos irão conter o parâmetro $\theta$. Assim, ao calcular um intervalo, pode-se dizer que há $100 \times \gamma \%$ de confiança de que o intervalo contém o parâmetro de interesse.
 
-# Teste de Normalidade
+### Teste de Normalidade
 
 Os testes de normalidade são utilizados para verificar se uma variável aleatória segue um distribuição Normal de probabilidade ou não. Eles são muito importantes, pois impactam em qual teste deve ser utilizado em uma análise futura. Se o resultado do teste confirmar que a variável segue uma distribuição normal, procedimentos paramétricos podem e devem ser utilizados. Caso contrário, os métodos não paramétricos são mais recomendados.
 
-## Teste de Normalidade de Kolmogorov-Smirnov
+#### Teste de Normalidade de Kolmogorov-Smirnov
 
-O **teste de Kolmogorov-Smirnov** é usado para determinar se duas distribuições de probabilidade diferem uma da outra. É baseado na diferença entre a função de distribuição acumulada teórica $F_0(x)$ e a função de distribuição acumulada da amostra $S_n(x)$. A função $S_n(x)$ é definida como a proporção das observações da amostra que são menores ou iguais a $x$.
+O teste de Kolmogorov-Smirnov é usado para determinar se duas distribuições de probabilidade diferem uma da outra. É baseado na diferença entre a função de distribuição acumulada teórica $F_0(x)$ e a função de distribuição acumulada da amostra $S_n(x)$. A função $S_n(x)$ é definida como a proporção das observações da amostra que são menores ou iguais a $x$.
 
-O teste possui as seguintes hipóteses:
+O teste possui as seguintes hipóteses: \hipoteses{A variável segue o modelo proposto}{A variável segue outro modelo}
 
-```{=latex}
-\begin{center}
-\hipoteses{A variável segue o modelo proposto}{A variável segue outro modelo}
-\end{center}
-```
 Se a hipótese nula é verdadeira, espera-se que as diferenças entre $F_0(x)$ e $S_n(x)$ sejam pequenas e estejam dentro dos limites dos erros aleatórios. O teste de Kolmogorov-Smirnov focaliza a maior dessas diferenças. No caso do teste de normalidade de Kolmogorov-Smirnov, a função de distribuição acumulada teórica $F_0(x)$ é a função de distribuição acumulada da normal, com média e variância estimadas pela amostra. Este teste é mais recomendado para amostras grandes sem *outliers*.
 
-# Teste de Comparação de Médias
-## Teste de Kruskal-Wallis
+### Teste de Comparação de Médias
+
+#### Teste de Kruskal-Wallis
 
 O teste de Kruskal-Wallis é utilizado para comparar dois ou mais grupos independentes sem supor nenhuma distribuição. É um método baseado na comparação de postos, os quais são atribuídos a cada observação de uma variável quantitativa após serem ordenadas.
 
-As hipóteses do teste de Kruskal-Wallis são formuladas da seguinte maneira:
+As hipóteses do teste de Kruskal-Wallis são formuladas da seguinte maneira: \hipoteses{Não existe diferença entre os grupos}{Pelo menos um grupo difere dos demais}
 
-\hipoteses{Não existe diferença entre os grupos}{Pelo menos um grupo difere dos demais}
-
-A estatística do teste de Krukal-Waliis é definida da seguinte maneira:
-
-$$
+A estatística do teste de Krukal-Waliis é definida da seguinte maneira: $$
 H_{Kruskal-Wallis}=
     \displaystyle\frac{\displaystyle\left[ \frac{12}{n(n+1)} \sum_{i=1}^{k} \frac{R_i^2}{n_i} \right] - 3(n+1)}
     {\displaystyle1- \left[ \frac{\displaystyle\sum_{j}^{}(t_j^3 - t_j)}{n^3 - n}\right]} 
 \approx \chi^2_{(k-1)}
-$$
-Com: - $k=$ número de grupos
+$$ Com:
+
+-   $k=$ número de grupos
 
 -   $R_i=$ soma dos postos do grupo i
 
@@ -281,17 +269,19 @@ Se o p-valor for menor que o nível de significância $\alpha$, rejeita-se a hip
 
 ### Teste de Independência
 
-Esse teste tem como objetivo verificar se existe associação entre duas variáveis, sendo mais recomendado para variáveis qualitativas (principalmente nominais). O princípio básico deste método é comparar proporções, ou seja, as possíveis divergências entre as frequências observadas e esperadas para um certo evento. Para esse teste, as hipóteses podem ser escritas como:
+#### Testes Qui-Quadrado
 
-\hipoteses{A variável X é independente da variável Y}{A variável X depende da variável Y}
+Os testes a seguir utilizam como base a estatística $\chi^{2}$, apresentando mudanças nos graus de liberdade da sua distribuição de acordo com o teste que será utilizado. No geral, $$ \chi_{v}^{2} = \sum \frac{(o_{i} - e_{i})^{2}}{e_{i}} $$
+
+em que $v$ expressa os graus de liberdade, $o_{i}$ é a frequência observada e $e_{i}$ é chamado de valor esperado e representa a frequência que seria observada se $H_{0}$ fosse verdadeira.
+
+Esse teste tem como objetivo verificar se existe associação entre duas variáveis, sendo mais recomendado para variáveis qualitativas (principalmente nominais). O princípio básico deste método é comparar proporções, ou seja, as possíveis divergências entre as frequências observadas e esperadas para um certo evento. Para esse teste, as hipóteses podem ser escritas como: \hipoteses{A variável X é independente da variável Y}{A variável X depende da variável Y}
 
 Este teste é baseado no cálculo dos valores esperados. Os valores esperados são os valores que seriam observados caso a hipótese nula fosse verdadeira:
 
-$$e_{ij} = \frac{(total\ da\ linha\ i) \times (total\ da\ coluna\ j)}{total\ geral} $$
-Para isso, utiliza-se a seguinte estatística:
+$$e_{ij} = \frac{(total\ da\ linha\ i) \times (total\ da\ coluna\ j)}{total\ geral} $$ Para isso, utiliza-se a seguinte estatística:
 
-$$\chi_{v}^{2} = \displaystyle\sum_{i=1}^r \sum_{j=1}^s \frac{ {(o_{ij} - e_{ij})}^2}{e_{ij}}$$
-em que:
+$$\chi_{v}^{2} = \displaystyle\sum_{i=1}^r \sum_{j=1}^s \frac{ {(o_{ij} - e_{ij})}^2}{e_{ij}}$$ em que:
 
 -   $e_{ij}=$ valor esperado na i-ésima linha e na j-ésima coluna
 -   $o_{ij}=$ valor observado na i-ésima linha e na j-ésima coluna
@@ -302,41 +292,33 @@ em que:
 Então, sob a hipótese de $H_{0}$ ser verdadeira, a estatística do teste seguirá a distribuição $\chi_{v}^{2}$.
 
 Para que a aproximação Qui-Quadrado seja satisfatória, é preciso que a amostra seja relativamente grande, com todos os valores esperados maiores ou iguais a 5 ou no máximo 20% deles seja menor que 5 com todos maiores que 1. Caso isso não ocorra, utiliza-se a correção de **Yates**.
-## Teste de Correlação de Pearson
 
-O coeficiente de correlação linear de Pearson indica a força e a direção do relacionamento linear entre duas variáveis quantitativas. É um índice adimensional com valores situados entre -1 e 1, no qual o valor -1 representa total correlação linear negativa entre as variáveis (quando o valor de uma variável cresce, o valor da outra diminui) e o valor 1 representa total correlação linear positiva entre elas (ambas crescem simultaneamente). Esse coeficiente é obtido por meio da fórmula:
+### Coeficiente de Correlação de Pearson
 
-$$r_{Pearson} = \frac{\displaystyle \sum_{i=1}^{n} \left [ \left(x_i-\bar{x}\right) \left(y_i-\bar{y}\right) \right]}{\sqrt{\displaystyle \sum_{i=1}^{n} x_i^2 - n\bar{x}^2} \sqrt{\displaystyle \sum_{i=1}^{n} y_i^2 - n\bar{y}^2}}$$
-\noindent em que
+O coeficiente de correlação de Pearson é uma medida que verifica o grau de relação linear entre duas variáveis quantitativas. Este coeficiente varia entre os valores -1 e 1. O valor zero significa que não há relação linear entre as variáveis. Quando o valor do coeficiente $r$ é negativo, diz-se existir uma relação de grandeza inversamente proporcional entre as variáveis. Analogamente, quando $r$ é positivo, diz-se que as duas variáveis são diretamente proporcionais.
 
--   $x_i=$ i-ésimo valor da variável $X$
+O coeficiente de correlação de Pearson é normalmente representado pela letra $r$ e a sua fórmula de cálculo é:
 
--   $y_i=$ i-ésimo valor da variável $Y$
+$$
+r_{Pearson} = \frac{\displaystyle \sum_{i=1}^{n} \left [ \left(x_i-\bar{x}\right) \left(y_i-\bar{y}\right) \right]}{\sqrt{\displaystyle \sum_{i=1}^{n} x_i^2 - n\bar{x}^2}  \times \sqrt{\displaystyle \sum_{i=1}^{n} y_i^2 - n\bar{y}^2}}
+$$
 
--   $\bar{x}=$ média dos valores da variável $X$
+Onde:
 
--   $\bar{y}=$ média dos valores da variável $Y$
+-   $x_i =$ i-ésimo valor da variável $X$
+-   $y_i =$ i-ésimo valor da variável $Y$
+-   $\bar{x} =$ média dos valores da variável $X$
+-   $\bar{y} =$ média dos valores da variável $Y$
 
--   $r_{Pearson}=$ coeficiente de correlação linear de Pearson amostral
-
-Para o teste de correlação de Pearson, tem-se as seguintes hipóteses:
-
-\hipoteses{Não há correlação linear entre as variáveis $X$ e $Y$ $\left(\rho_{Pearson} = 0 \right)$ }{Há correlação linear entre as variáveis $X$ e $Y$ $\left(\rho_{Pearson} \neq 0 \right)$ }
-
-em que $\rho_{Pearson}$ é o parâmetro a ser testado: coeficiente de correlação linear populacional.
-
-Se X e Y tem distribuição normal, tem-se que a estatística do teste é dada por:
-
-$$t_{Pearson} = \frac{r_{Pearson} \sqrt{n-2}}{\sqrt{1-r_{Pearson}^2}} \sim t_{n-2} $$
-Assim, sob $H_{0}$, $t_{Pearson}$ segue uma distribuição \textit{t}-Student com ($n - 2$) graus de liberdade.
+Vale ressaltar que o coeficiente de Pearson é paramétrico e, portanto, sensível quanto à normalidade (simetria) dos dados.
 
 # Análises
 
-### Top 5 países com maior número de mulheres medalhistas
+## Top 5 países com maior número de mulheres medalhistas
 
 O objetivo dessa análise é ver quais países possuem o maior número de mulheres que conquistaram medalhas, em ordem do país com maior número de mulheres medalhistas para o país com menor número.
 
-Para isso, foi criado um gráfico de barras verticais, ideal para analisar uma variável quantitativa discreta, que são valores enumeráveis como a quantidade de medalhas e uma variável qualitativa nominal que são os nomes dos países. No gráfico, a quantidade de medalhas está representava no eixo X e os países no eixo Y em ordem do maior número de mulheres medalhistas para o menor, quantificados por frequência relativa que é utilizada para a comparação entre classes de categorias, como os países.
+Para isso, foi criado um gráfico de barras verticais, ideal para analisar uma variável quantitativa discreta, que são valores enumeráveis como a quantidade de medalhas e uma variável qualitativa nominal que são os nomes dos países. No gráfico, os países estão representados no eixo X em ordem do maior número de mulheres medalhistas para o menor e a quantidade de medalhas no eixo Y, quantificados por frequência relativa que é utilizada para a comparação entre classes de categorias, como os países.
 
 Para melhor vizualização, acompanhe o gráfico abaixo:
 
@@ -360,11 +342,14 @@ banco_exel <- map_dfr(abas, ~ {
   return(dados)
 })
 
+#Removendo linhas duplicadas
+banco_exel <- unique(banco_exel)
+
 #Renomeando tipos de medalha
 banco_exel <- banco_exel %>%
   mutate(Medalha = recode(Medalha, "Gold" = "Ouro", "Silver" = "Prata", "Bronze" = "Bronze"))
 
-#Filtandro dados
+#Criando bancos para gráfico
 banco_grafico <- banco_exel %>%
   filter(Sexo == "F") %>%  
   group_by(País, Medalha) %>%   
@@ -372,11 +357,14 @@ banco_grafico <- banco_exel %>%
   pivot_wider(names_from = Medalha, values_from = Medalhas, values_fill = 0) %>%  
   mutate(Total = Ouro + Prata + Bronze)  
 
-# Top 5 países
-top_5_países <- banco_grafico %>%
+classes <- banco_grafico %>%
+  mutate(freq = Total) %>%  
+  mutate(
+    relative_freq = round((freq / sum(freq)) * 100, 1),
+    freq = gsub("\\.", ",", relative_freq) %>% paste("%", sep = ""),
+    label = str_c(freq, " (", Total, ")", sep = "") %>% str_squish()) %>% 
   arrange(desc(Total)) %>%
   slice_head(n = 5) %>%  
-  select(País, Total) %>% 
   mutate(País = recode(País, 
                        "United States" = "Estados Unidos", 
                        "Russia" = "Rússia", 
@@ -388,13 +376,6 @@ top_5_países <- banco_grafico %>%
 ::: {#fig-grafico-barras1 layout-align="center" fig-pos="H"}
 ```{r}
 # Gráfico
-classes <- top_5_países %>%
-  mutate(freq = Total) %>%  
-  mutate(
-    relative_freq = round((freq / sum(freq)) * 100, 1),
-    freq = gsub("\\.", ",", relative_freq) %>% paste("%", sep = ""),
-    label = str_c(freq, " (", Total, ")", sep = "") %>% str_squish()  
-  )
 #| fig-cap: "Gráfico de barras1"
 #| label: fig-grafico-barras1
 ggplot(classes) +
@@ -411,27 +392,20 @@ ggplot(classes) +
 ggsave("grafico-barras1.pdf", width = 158, height = 93, units = "mm")
 ```
 
-Gráfico de colunas do total de medalhas
+Gráfico de colunas do total de medalhas de mulheres medalhistas
 :::
 
 É possível vizualizar a partir da @fig-grafico-barras1 que em primeiro lugar está os Estados Unidos, com o total de 741 medalhistas, seguido da Rússia com 416 medalhistas, seguido da China com 384 medalhistas, seguida da Austrália com 340 medalhistas, seguida da Alemanha com 268 medalhistas.
 
-É possível ver uma diferença significativa entre os 5 primeiros países, sendo os Estados Unidos com 325 medalhas a mais que o segundo colocado e 473 medalhas a mais que o quinto colocado, diferença essa maior que qualquer total de medalhas de outro país. Assim, os Estados Unidos tem mais medalhas que a soma do total de medalhas que a Rússia e Alemanha juntas. Dessa forma, conclui-se que os Estados Unidos é um país que prepara com excelência as atletas para as Olimpíadas.
+É possível ver uma diferença entre os 5 primeiros países, sendo os Estados Unidos com 325 medalhas a mais que o segundo colocado e 473 medalhas a mais que o quinto colocado, diferença essa maior que qualquer total de medalhas de outro país. Assim, os Estados Unidos tem mais medalhas que a soma do total de medalhas que a Rússia e Alemanha juntas. Dessa forma, conclui-se que os Estados Unidos é um país que prepara com excelência as atletas para as Olimpíadas.
 
-Além disso, é possível ver que não há diferença significativa entre a Rússia, China e Austrália quanto o total de mulheres medalhistas, visto que sua diferença entre as medalhas é baixa. Dessa forma, esses países se equivalem na preparação de atletas medalhistas.
+Além disso, é possível ver que não há diferença entre a Rússia, China e Austrália quanto o total de mulheres medalhistas, visto que sua diferença entre as medalhas é baixa. Dessa forma, esses países se equivalem na preparação de atletas medalhistas.
 
 Essa análise não apenas destaca a importância do investimento em esportes femininos, como enfatiza países com estratégias eficazes que podem ser implementadas para fomentar o sucesso de mulheres atletas em nível internacional. Portanto, enquanto os Estados Unidos estabelecem um padrão elevado, a competitividade entre Rússia, China e Austrália também ressalta a crescente importância do esporte feminino globalmente.
 
-### Valor IMC por esporte, estes sendo, ginástica, futebol, judô, atletismo e badminton
+## Valor IMC por esporte, estes sendo, ginástica, futebol, judô, atletismo e badminton
 
-O objetivo dessa análise é observar o IMC dos esportes selecionados, estes sendo, ginástica, futebol, judô, atletismo e badminton. Para isso, foi preciso calcular esse índice para cada atleta usando a fórmula peso (kg) / altura (m)2, agrupando o valor do IMC do atleta por esporte.
-
-O IMC é uma variável quantitativa contínua, ou seja apresenta valores resultados de medições, permitindo construir um boxplot para perceber de forma mais clara como os dados estão distribuídos, sendo a porção inferior do retângulo o primeiro quartil, enquanto a superior indica o terceiro quartil. Já o traço no interior do retângulo representa a mediana do conjunto de dados, ou seja, o valor em que o conjunto de dados é dividido em dois subconjuntos de mesmo tamanho. A média é representada pelo losango branco e os pontos são outliers, valores discrepantes da série de dados, ou seja, valores que não demonstram a realidade de um conjunto de dados.
-
-Por outro lado, o IMC é classificado em 6 categorias: Abaixo do peso, Peso normal, Sobrepeso, Obesidade grau I, Obesidade grau II e Obesidade grau II. Assim, a variável categoria do IMC é qualitativa ordinal, permitindo construir um gráfico de barras com a quantidade de atletas por categoria do IMC em cada esporte. Além disso, criou-se um quadro de medidas resumo, tabela que apresenta estatísticas descritivas de um conjunto de dados, como média, mediana, moda, desvio padrão, quartis e extremos. Ele serve para fornecer uma visão rápida e concisa das características principais da distribuição dos dados, permitindo entender sua tendência central, variabilidade e forma, facilitando a comparação entre diferentes grupos, nesse caso, diferentes países.
-
-Para ver se os dados do IMC seguem uma distribuição normal, ou seja, se a média, a mediana e a moda são iguais e estão localizadas no centro da distribuição, foi usado o teste de Shapiro-Wilk. E com seu resultado, foi realizado o teste de Kruskal-Wallis para ver se há uma diferença significativanos valores de IMC entre os diferentes esportes.
-
+O objetivo dessa análise é observar o IMC dos esportes selecionados, estes sendo, ginástica, futebol, judô, atletismo e badminton. O IMC é uma variável quantitativa contínua, ou seja apresenta valores resultados de medições, permitindo construir um boxplot para perceber como os dados estão distribuídos. Para ver se há uma diferença nos valores de IMC entre os diferentes esportes, foram usados os testes de hipóteses de Kolmogorov-Smirnov e Kruskal-Wallis
 
 ```{r}
 # Valor IMC por esporte (ginástica, futebol, judô, atletismo e badminton)
@@ -454,7 +428,7 @@ esportes_selecionados <- c("Ginástica", "Futebol", "Judô", "Atletismo", "Badmi
 
 # Calculando o IMC
 banco_exel <- banco_exel %>%
-  mutate(IMC = Peso / (Altura^2))
+  mutate(IMC = Peso / (Altura^2) *10000)
 
 #Banco esportes selecionados
 banco_esportes_selecionados <- banco_exel %>%
@@ -494,32 +468,15 @@ ggplot(banco_esportes_selecionados, aes(x = Esporte, y = IMC)) +
   theme_estat() 
 ggsave("gráfico_boxplot.pdf", width = 158, height = 93, units = "mm")
 ```
-Boxplot do IMC
-:::
 
-::: {#fig-grafico-barras2 layout-align="center" fig-pos="H"}
-```{r}
-# Gráfico de barras para classificação IMC
-# | fig-cap: "Gráfico de barras2"
-# | label: fig-grafico-barras2
-ggplot(banco_esportes_selecionados, aes(x = Esporte, fill = Classificação_IMC)) +  
-  geom_bar(position = position_dodge(width = 0.8), width = 0.7) +  
-  labs(x = "Esporte", y = "Frequência") +  
-  geom_text(stat = 'count', aes(label = ..count..),  
-            position = position_dodge(width = 0.8),  
-            vjust = -0.5,  
-            hjust = 0.5,  
-            size = 3) +
-  theme_estat()  
-ggsave("gráfico_colunas.pdf", width = 158, height = 93, units = "mm")
-```
-Gráfico de colunas da classificação do IMC
+Boxplot do IMC
 :::
 
 ::: {#quad-quadro_resumo1 layout-align="center" quad-pos="H"}
 ```{=latex}
 \begin{quadro}[H]
     \caption{Medidas resumo do IMC}
+    \centering
     \begin{tabular}[frame=none]{ | l |
             S[table-format = 2.2]
             S[table-format = 1.2]
@@ -543,44 +500,41 @@ Gráfico de colunas da classificação do IMC
     \label{quad:quadro_resumo1}
 \end{quadro}
 ```
-Medidas resumo do IMC
 :::
 
 \hipoteses{Os dados seguem uma distribuição normal}{Os dados não seguem uma distribuição normal}
 
 ```{r}
-#Teste de Shapiro-Wilk
-#shapiro.test(banco_esportes_selecionados$IMC)
+#library(stats)
+#Teste de Kolmogorov-Smirnov para IMC
+#ks.test(banco_esportes_selecionados$IMC, "pnorm")
 ```
 
 ::: {#quad-teste_hipotese1 layout-align="center" quad-pos="H"}
 ```{=latex}
 \begin{quadro}[H]
     \centering
-    \caption{P-valor do Teste de Shapiro-Wilk do IMC}
-    \begin{tabular}{lc c c}
+    \caption{P-valor do Teste de Kolmogorov-Smirnov do IMC}
+    \begin{tabular}{|c c c |}
           \toprule
           \textbf{Variável} & \textbf{P-valor} & \textbf{Decisão do teste} \\
           \midrule
-          IMC & \pvalor{0.05} & Não rejeita $H_0$ \\
+          IMC & \pvalor{<0,01} & Rejeita $H_0$ \\
           \bottomrule
     \end{tabular}
     \label{quad:teste_hipotese1}
 \end{quadro}
 ```
-P-valor do teste de normalidade Shapiro-Wilk
 :::
 
 \hipoteses{Não há diferença significativa nos valores de IMC entre os diferentes esportes}{Há diferença significativa nos valores de IMC entre os diferentes esportes}
 
 ```{r}
 #library(ggsignif)
-
 # Teste Kruskal-Wallis
 #imc_por_esporte <- banco_esportes_selecionados %>%
 #  group_by(Esporte) %>%
 #  summarise(IMC = list(IMC))
-
 #imc_long <- imc_por_esporte %>%
 #  unnest(IMC)
 
@@ -592,34 +546,29 @@ P-valor do teste de normalidade Shapiro-Wilk
 \begin{quadro}[H]
 \centering
 \caption{P-valor do Teste de Kruskal-Wallis da média do IMC}
-\begin{tabular}{lc c c}
+\begin{tabular}{|c c c |}
     \toprule
     \textbf{Variável} & \textbf{P-valor} & \textbf{Decisão do teste} \\
     \midrule
-    IMC & \pvalor{0.05} & Não rejeita $H_0$ \\
+    IMC & \pvalor{<0,01} & Rejeita $H_0$ \\
     \bottomrule
 \end{tabular}
 \label{quad:teste_hipotese2}
 \end{quadro}
 ```
-P-valor do Teste de Kruskal-Wallis
 :::
 
-O resultado do @quad-teste_hipotese1 com 5% de nível de significância revelou que os dados não estão em conformidade com a distribuição normal, pois o p_valor foi extremamente baixo, sendo 0,00000000000000022. Portanto, os dados são não paramétricos. Assim, para verificar se as médias do IMC dos esportes são iguais, foi realizado o @quad-teste_hipotese2, comparando os 5 esportes sem supor nenhuma distribuição.
+Verifica-se a partir do @fig-boxplotIMC que as medianas de Ginástica e Atletismo são próximas, assim como as de Futebol e Badminton, já a de Judô está acima dos terceiros quartis dos outros esportes, mostrando que o valor que está em 50% para o IMC de Judô está acima de 75% dos outros esportes, revelando que os dados de IMC para os judocas estão muito elevados. Além disso, a amplitude interquartil, que indica a dispersão dos dados, é pequena para Futebol e Badminton, intemediária para Ginástica e Atletismo e alta para judô, revelando a variabilidade do índice IMC nesses esportes. Quanto aos outliers, valores atípicos de uma categoria, estão evidentes no Atletismo e Judô, revelando que há muitos atletas nesses esportes que apresentam alto IMC, além do comum. Quanto à simetria dos dados, tem-se que é simétrica para o Futebol, Badminton e Judô, revelando que os dados estão simetricamente distribuidos, ou seja, não tendam para para os extremos e assimétrica à direita para o Atletismo, dados próximos de um IMC mais baixo e assimétrica à esquerda para a Ginástica, revelando que os dados tendêm para um IMC maior entre essa categoria. Comparando os dados entre os esportes, vê-se claramente que os IMC menores pertencem aos atletas da Ginástica, intemediários para os atletas de Atletismo, Futebol e Badminton e IMC maior para os judocas.
 
-Os resultados do teste de Kruskal-Wallis indicam que há uma diferença significativa nos valores de IMC entre os diferentes esportes, com um valor de p extremamente baixo e 0,00000000000000022, o que leva a rejeitar a hipótese nula com 5% de nível de significância. A estatística de Kruskal-Wallis foi de 280.87, com 4 graus de liberdade, evidenciando uma variação significativa nas distribuições do IMC conforme o esporte praticado.
-
-Verifica-se a partir do @fig-boxplotIMC  que as medianas de Ginástica e Atletismo são próximas, assim como as de Futebol e Badminton, já a de Judô está acima dos terceiros quartis dos outros esportes, mostrando que o valor que está em 50% para o IMC de Judô está acima de 75% dos outros esportes, revelando que os dados de IMC para os judocas estão muito elevados. Além disso, a amplitude interquartil, que indica a dispersão dos dados, é pequena para Futebol e Badminton, intemediária para Ginástica e Atletismo e alta para judô, revelando a variabilidade do índice IMC nesses esportes. Quanto aos outliers, valores atípicos de uma categoria, estão evidentes no Atletismo e Judô, revelando que há muitos atletas nesses esportes que apresentam alto IMC, além do comum. Quanto à simetria dos dados, tem-se que é simétrica para o Futebol, Badminton e Judô, revelando que os dados estão simetricamente distribuidos, ou seja, não tendam para para os extremos e assimétrica à direita para o Atletismo, dados próximos de um IMC mais baixo e assimétrica à esquerda para a Ginástica, revelando que os dados tendêm para um IMC maior entre essa categoria. Comparando os dados entre os esportes, vê-se claramente que os IMC menores pertencem aos atletas da Ginástica, intemediários para os atletas de Atletismo, Futebol e Badminton e IMC maior para os judocas.
-
-A partir do @fig-grafico-barras2 vemos que há 22,58% ginastas abaixo do peso, 75,37% no peso normal e 2,05% em sobrepeso. Para o atletismo, há 10,29% de atletas abaixo do peso, 73,95% no peso normal, 10,18% em sobrepeso e 5,57% em obesidade. Já no futebol, há 1,19% de atletas abaixo do peso, 92,67% com peso normal e 6,14% em sobrepeso. No badminton 97,48% estão com peso normal e 2,152% em sobrepeso. E no judô temos apenas 57,5% de atletas no peso normal, 26,43% em sobrepeso e 16,07% em obesidade. Em conclusão, a análise do IMC dos atletas dos esportes selecionados revela padrões significativos em relação à composição corporal de cada grupo. Os dados indicam que os atletas de ginástica apresentam um IMC médio inferior ao peso normal, enquanto os atletas de judô estão, em média, acima desse padrão, com uma diferença notável entre os dois. Por outro lado, os atletas de atletismo, futebol e badminton apresentam IMCs dentro da faixa normal, evidenciando uma distribuição saudável.
+O resultado do teste de normalidade Shapiro-Wilk com 5% de nível de significância revelou que os dados não estão em conformidade com a distribuição normal, pois o p_valor foi extremamente baixo, próximo a 0. Assim, para verificar se as médias do IMC dos esportes são iguais, foi realizado o teste de Kruskal-Wallis, que indica que há uma diferença significativa nos valores de IMC entre os diferentes esportes, com p-valor extremamente baixo, o que leva a rejeitar a hipótese nula com 5% de nível de significância.
 
 Esses resultados sugerem a necessidade de uma avaliação cuidadosa das exigências físicas de cada esporte e a importância de estratégias nutricionais e de treinamento adequadas para promover a saúde e o desempenho atlético. A análise do IMC não apenas fornece insights sobre a condição física dos atletas, mas também pode informar decisões sobre intervenções que visem melhorar a saúde e o bem-estar dentro dessas modalidades esportivas.
 
-### Top 3 medalhistas gerais por quantidade de cada tipo de medalha
+## Top 3 medalhistas gerais por quantidade de cada tipo de medalha
 
-O objetivo dessa análise é entender quais são os 3 medalhistas com maior número de medalhas no total, observar entre eles a quantidade de cada tipo de medalha que cada um conquistou e se existe relação entre o medalhista e cada tipo de medalha conquistada. Para isso, foi criado um gráfico de barras para vizualizar visualmente a proporção do tipo de medalhas no total de medalhas de cada atleta, sendo a variável "tipo de medalha" quantitativa discreta e "atleta" qualitativa nominal.
+O objetivo dessa análise é entender quais são os 3 medalhistas com maior número de medalhas no total, observar entre eles a quantidade de cada tipo de medalha que cada um conquistou e se existe relação entre o medalhista e cada tipo de medalha conquistada. Para isso, foi criado um gráfico de barras para vizualizar a proporção do tipo de medalhas no total de medalhas de cada atleta, sendo a variável "tipo de medalha" qualitativa ordinal e "atleta" qualitativa nominal.
 
-Para avaliar se há relação entre o medalhista e cada tipo de medalha conquistada, ou seja, se o medalhista e o tipo de medalha são variáveis independentes, usou-se o teste de hipótese de Fisher, utilizado quando se quer testar a independência de variáveis com poucos dados de observação.
+Para avaliar se há relação entre o medalhista e cada tipo de medalha conquistada, ou seja, se o medalhista e o tipo de medalha são variáveis independentes, usou-se o teste de hipótese de Qui Quadrado de independência utilizado quando se quer testar a independência de variáveis com poucos dados de observação.
 
 ```{r}
 #3 medalhistas com maior número de medalhas no total, 
@@ -679,7 +628,7 @@ ggplot(grafico3) +
   geom_text(
     position = position_dodge(width = 0.9),
     vjust = -0.5, hjust = 0.5,
-    size = 3
+    size = 2.5
   ) +
   labs(x = "Atletas", y = "Frequência") +
   theme_estat()  
@@ -688,7 +637,7 @@ ggplot(grafico3) +
 Gráfico de colunas do tipo de medalha
 :::
 
-\hipoteses{Não há relação entre o medalhista e o tipo de medalha conquistada (são independentes)}{Há relação entre o medalhista e o tipo de medalha conquistada (não são independentes)}
+\hipoteses{Não há relação entre o medalhista e o tipo de medalha (são independentes)}{Há relação entre o medalhista e o tipo de medalha (não são independentes)}
 
 ```{r}
 # Teste Qui Quadrado de independência
@@ -705,18 +654,17 @@ Gráfico de colunas do tipo de medalha
 ```{=latex}
 \begin{quadro}[H]
 \centering
-\caption{P-valor do teste Qui-Quadrado de Independência) de X}
-\begin{tabular}{lc c c}
+\caption{P-valor do teste Qui-Quadrado de Independência entre o medalhista e o tipo de medalha }
+\begin{tabular}{|c c c |}
     \toprule
     \textbf{Variável} & \textbf{P-valor} & \textbf{Decisão do teste} \\
     \midrule
-    Medalhas & \pvalor{0.05} & Não rejeita $H_0$ \\
+    Medalhas & \pvalor{0.012} & Rejeita $H_0$ \\
     \bottomrule
 \end{tabular}
 \label{quad-teste_hipotese3}
 \end{quadro}
 ```
-P-valor do Teste Qui-Quadrado de Independência
 :::
 
 A análise estatística revela informações revelantes sobre a distribuição de medalhas entre os atletas. Por meio da @fig-grafico-barras3, vemos que Phelps acumula um total de 28 medalhas, das quais 23 são de ouro, 3 de prata e 2 de bronze. Este desempenho não apenas o posiciona como o atleta com o maior número absoluto de medalhas, mas também evidencia uma predominância acentuada nas medalhas de ouro, que representam aproximadamente 82% de suas conquistas totais.
@@ -725,9 +673,9 @@ Em contraste, Natalie Coughlin e Ryan Lochte, ambos com 12 medalhas, apresentam 
 
 A discrepância observada nas medalhas de ouro de Phelps em relação aos outros atletas é notável, pois a soma das medalhas de ouro de Coughlin e Lochte (9) ainda é inferior ao total conquistado por Phelps. Essa diferença ressalta a importância do tipo de medalha na avaliação do desempenho dos atletas, indicando que a medalha de ouro não apenas representa a conquista máxima em competições, como é um indicador crítico de sucesso em comparação com medalhas de menor valor, como as de prata e bronze.
 
-Para investigar a relação entre o tipo de medalha conquistada e o atleta, foi realizado um @quad-teste_hipotese3 de hipótese, utilizando o teste Qui-Quadrado de independência. Com um nível de significância de 5%, os resultados indicaram que existe uma associação entre o medalhista e o tipo de medalha conquistada, pois o p-valor do teste foi 0,0124321 que é menor que o nível de significância, rejeita-se HO. Isso implica que as variáveis "atleta" e "tipo de medalha" não são independentes, sugerindo que o desempenho em termos de medalhas varia de maneira entre os atletas. Essa conclusão é relevante para a compreensão das dinâmicas competitivas no contexto do esporte, pois indica que fatores como habilidade, treinamento e experiência podem influenciar a capacidade de um atleta em conquistar medalhas de diferentes categorias.
+Para investigar a relação entre o tipo de medalha conquistada e o atleta, foi realizado um teste Qui-Quadrado de Independência.Com um nível de significância de 5%, os resultados indicaram que existe uma associação entre o medalhista e o tipo de medalha conquistada, com p-valor igual a 0,012. Isso implica que as variáveis "atleta" e "tipo de medalha" não são independentes, sugerindo que o desempenho em termos de medalhas varia de maneira entre os atletas. Essa conclusão é relevante para a compreensão das dinâmicas competitivas no contexto do esporte, pois indica que fatores como habilidade, treinamento e experiência podem influenciar a capacidade de um atleta em conquistar medalhas de diferentes categorias.
 
-### Variação Peso por Altura
+## Variação Peso por Altura
 
 O objetivo dessa análise é entender a relação entre o peso e altura dos atletas para compreender se à medida que o peso aumenta a altura também aumenta, diminui ou não tem diferença entre essas variáveis. Para isso, foi criado um gráfico de dispersão para ilustrar o comportamento conjunto de duas variáveis quantitativas contínuas, onde cada ponto representa uma observação do banco de dados.
 
@@ -740,11 +688,12 @@ Também foram criados gráficos boxplot para cada variável para ver sua distrib
 #Gráfico dispersão
 ggplot(banco_exel) +
   aes(x = Altura, y = Peso) +
-  geom_point(alpha = 0.4, colour = "#A11D21", size = 3) +
+  geom_point(alpha = 0.2, colour = "#A11D21", size = 3) +
   labs(x = "Altura (cm)", y = "Peso (kg)") +
   theme_estat()
 ggsave("dispersao.pdf", width = 158, height = 93, units = "mm")
 ```
+
 Gráfico de dispersão entre altura e peso
 :::
 
@@ -754,42 +703,44 @@ Gráfico de dispersão entre altura e peso
 # | label: fig-boxplot-altura
 #Boxplot Altura
 ggplot(banco_exel) +
-  aes(x=factor(""), y=Altura) +
-  geom_boxplot(fill=c("#A11D21"), width = 0.5) +
-  guides(fill=FALSE) +
-  stat_summary(fun="mean", geom="point", shape=23, size=3, fill="white")+
-  labs(x="", y="Altura(cm)")+
+  aes(x = factor(""), y = Altura) +
+  geom_boxplot(fill = "#A11D21", width = 0.5) +
+  guides(fill = FALSE) +
+  stat_summary(fun = "mean", geom = "point", shape = 23, size = 3, fill = "white") +
+  labs(x = "", y = "Altura (cm)") +
+  scale_y_continuous(breaks = seq(100, 300, by = 50)) +  # Apenas uma chamada para scale_y_continuous
   theme_estat()
 ggsave("boxplot_altura.pdf", width = 158, height = 93, units = "mm")
+
 ```
+
 Gráfico boxplot da altura
 :::
 
 ::: {#quad-quadro_resumo2 layout-align="center" quad-pos="H"}
 ```{=latex}
 \begin{quadro}[H]
-    \caption{Medidas resumo da Altura}
-    \begin{tabular}[frame=none]{ | l |
-          S[table-format = 0.2]
-          |}
+    \caption{Medidas resumo da altura dos atletas}
+    \centering
+    \begin{tabular}{ | l |
+            S[table-format = 2.2]
+            |}
     \toprule
-      \textbf{Estatística} 
-      \textbf{Valor} \\
-      \midrule
-      Média & 1,78 \\
-      Desvio Padrão & 0,12 \\
-      Variância & 0,01 \\
-      Mínimo & 1,37 \\
-      1º Quartil & 1,7 \\
-      Mediana & 1,78 \\
-      3º Quartil & 1,86 \\
-      Máximo & 2,19 \\
-   \bottomrule
-   \end{tabular}
-   \label{quad:quadro_resumo2}
+        \textbf{Estatística} & \textbf{Valor} \\
+        \midrule
+        Média & 176.11 \\
+        Desvio Padrão & 11.46 \\
+        Variância & 131.24 \\
+        Mínimo & 133 \\
+        1º Quartil & 168 \\
+        Mediana & 176 \\
+        3º Quartil & 184 \\
+        Máximo & 226 \\
+    \bottomrule
+    \end{tabular}
+    \label{quad:quadro_resumo2}
 \end{quadro}
 ```
-Medidas resumo da altura
 :::
 
 ::: {#fig-boxplot-peso layout-align="center" fig-pos="H"}
@@ -807,6 +758,7 @@ ggplot(banco_exel) +
 ggsave("boxplot_peso.pdf", width = 158, height = 93, units = "mm")
 
 ```
+
 Gráfico boxplot do peso
 :::
 
@@ -834,13 +786,11 @@ Gráfico boxplot do peso
     \label{quad:quadro_resumo3}
 \end{quadro}
 ```
-Medidas resumo do peso
 :::
 
 \hipoteses{Os dados de peso seguem uma distribuição normal}{Os dados de peso não seguem uma distribuição normal}
 
 ```{r}
-#library(stats)
 # Teste de Kolmogorov-Smirnov para Peso
 #ks.test(banco_exel$Peso, "pnorm")
 ```
@@ -850,17 +800,16 @@ Medidas resumo do peso
 \begin{quadro}[H]
 \centering
 \caption{P-valor do teset de Kolmogorov-Smirnov para Peso}
-\begin{tabular}{lc c c}
+\begin{tabular}{|c c c | }
     \toprule
     \textbf{Variável} & \textbf{P-valor} & \textbf{Decisão do teste} \\
     \midrule
-    Peso & \pvalor{0.05} & Não rejeita $H_0$ \\
+    Peso & \pvalor{< 0,01} & Rejeita $H_0$ \\
     \bottomrule
 \end{tabular}
 \label{quad:teste_hipotese4}
 \end{quadro}
 ```
-P-valor do teste de normalidade Kolmogorov-Smirnov para o peso
 :::
 
 \hipoteses{Os dados de altura seguem uma distribuição normal}{Os dados de altura não seguem uma distribuição normal}
@@ -875,51 +824,29 @@ P-valor do teste de normalidade Kolmogorov-Smirnov para o peso
 \begin{quadro}[H]
 \centering
 \caption{P-valor do teste de Kolmogorov-Smirnov para Altura}
-\begin{tabular}{lc c c}
+\begin{tabular}{|c c c |}
     \toprule
     \textbf{Variável} & \textbf{P-valor} & \textbf{Decisão do teste} \\
     \midrule
-    Altura & \pvalor{0.05} & Não rejeita $H_0$ \\
+    Altura & \pvalor{< 0,01} & Rejeita $H_0$ \\
     \bottomrule
 \end{tabular}
 \label{quad:teste_hipotese5}
 \end{quadro}
 ```
-P-valor do teste de normalidade Kolmogorov-Smirnov para a altura
 :::
-
-\hipoteses{Há correlação entre Peso e Altura}{Não há correlação entre Peso e Altura}
 
 ```{r}
 # Teste de correlação de Pearson
 #cor.test(banco_exel$Peso, banco_exel$Altura, method = "pearson")
 ```
 
-::: {#quad-teste_hipotese6 layout-align="center" tbl-pos="H"}
-```{=latex}
-\begin{quadro}[H]
-\centering
-\caption{P-valor do teste de correlação de Pearson para Peso e Altura}
-\begin{tabular}{lc c c}
-    \toprule
-    \textbf{Variável} & \textbf{P-valor} & \textbf{Decisão do teste} \\
-    \midrule
-    Altura & \pvalor{0.05} & Não rejeita $H_0$ \\
-    \bottomrule
-\end{tabular}
-\label{quad-teste_hipotese6}
-\end{quadro}
-```
-P-valor do teste de correlação de Pearson para peso e altura
-:::
+Com a @fig-dispersao, podemos observar que há correlação positiva, ou seja quando o peso aumenta, a altura aumenta também. No entanto, à medida que essas variáveis aumentam, os pontos começam a se dispersar, evidenciando que há atletas com baixo peso e maior altura e grande altura e baixo peso, mas a tendência geral dos dados é uma correlação positiva entre peso e altura. O gráfico também mostra que a maioria das pessoas se encontra em uma faixa específica de peso e altura, com uma dispersão menor de dados nessa faixa. Isso sugere que a relação entre peso e altura é relativamente consistente para a maioria dos indivíduos.
 
-Com a @fig-dispersao, podemos observar que há correlação positiva, ou seja quando o peso aumenta,  a altura aumenta também. No entanto, à medida que essas variáveis aumentam, os pontos começam a se dispersar, evidenciando que há atletas com baixo peso e maior altura e grande altura e baixo peso, mas a tendência geral dos dados é uma correlação positiva entre peso e altura. O gráfico também mostra que a maioria das pessoas se encontra em uma faixa específica de peso e altura, com uma dispersão menor de dados nessa faixa. Isso sugere que a relação entre peso e altura é relativamente consistente para a maioria dos indivíduos.
+Na @fig-boxplot-altura, vemos que a altura tem distribuição equilibrada, mas com muitos outliers, percebendo que as medidas dos quartis não variam muito, no entanto há atletas com alturas discrepantes de mínimo e máximo. Isso se vê no quadro de medidas resumo da variável peso, com medidas de variância pequenas, mas valores de mínimo e máximo muito longe da média. Na @fig-boxplot-peso, vemos que o peso tem alta variabilidade e muitos outliers além do valor máximo, percebendo que as medidas dos quartis variam muito. Isse se vê no quadro de medidas resumo da variável altura, com medidas de variância altas e valores de mínimo e máximo muito longe da média, sendo a diferença do mínimo para a média de 46 kg e do máximo para média de 101 kg.
 
-Na @fig-boxplot-altura, vemos que a altura tem distribuição equilibrada, mas com muitos outliers, percebendo que as medidas dos quartis não variam muito, no entanto há atletas com alturas discrepantes de mínimo e máximo. Isso se vê no @quad-quadro_resumo2, com medidas de variância pequenas, mas valores de mínimo e máximo muito longe da média. Na @fig-boxplot-peso, vemos que o peso tem alta variabilidade e muitos outliers além do valor máximo, percebendo que as medidas dos quartis variam muito. Isse se vê no @quad-quadro_resumo3, com medidas de variância altas e valores de mínimo e máximo muito longe da média, sendo a diferença do mínimo para a média de 46 kg e do máximo para média de 101 kg.
-
-Para analisar a relação da altura e peso, foi feito @quad-teste_hipotese6, com coeficiente de correlação igual a 0.7108746, o que indica uma correlação positiva forte entre altura e peso. Também concluimos que com um nível de significância de 5%, os resultados indicaram que existe uma correlação entre peso e altura dos atletas, pois o p-valor do teste foi muito próximo a zero, rejeitando-se HO.
+Para analisar a relação da altura e peso, foi calculado o coeficiente de correlação de Pearson para peso e altura, com valor igual a 0.790, o que indica uma correlação positiva forte entre altura e peso.
 
 # Conclusões
-Os resultados sugerem que, para otimizar o desempenho dos atletas de elite, que participaram das olimpíadas dos anos de 2000 até 2016, o melhor país para preparar atletas mulheres medalhistas é os Estados Unidos, seguido de Rússia, China, Austrália e Alemanha. Analisando os IMCs dos atletas de ginástica, futebol, judô, atletismo e badminton, vê-se que há diferença entre os IMCs de cada esporte, sendo ginástica o esporte com menor média, tendo 22,58% ginastas abaixo do peso e judô com a maior, observando que nesse esporte 42,5% dos atletas estão acima do peso normal, ou seja o esporte do atleta influencia no seu IMC. Além disso, Michael Fred Phelps, Natalie Anne Coughlin e Ryan Steven Lochte, todos nadadores, são os maiores medalhistas por quantidade de cada tipo de medalha, sendo que há relação entre o medalhista e o tipo de medalha conquistada. Também podemos concluir que o peso e altura dos atletas são variáveis relacionadas, ou seja, quando a altura aumenta, o peso do atleta também aumenta.
 
-A partir dessas análises, conclui-se que a preparação e o desenvolvimento dos atletas são influenciados não apenas pela escolha do esporte, como também por fatores culturais e estruturais presentes do país. Os dados mostram que a abordagem adotada por países como os Estados Unidos, com investimentos significativos em infraestrutura e treinamento, resulta em um maior número de medalhistas. Além disso, as diferenças nos IMCs entre nos esportes ressaltam a importância de rotinas de treinamento e nutrição específicos, adaptados às exigências físicas de cada modalidade. A correlação entre peso e altura  sugere que, para a otimização do desempenho, é fundamental considerar essas variáveis na formação dos atletas. Portanto, políticas esportivas que promovam a saúde e o bem-estar, aliadas a estratégias personalizadas de treinamento, podem contribuir para o sucesso de atletas em competições de alto nível.
+Os resultados sugerem que, para otimizar o desempenho dos atletas de elite, que participaram das olimpíadas dos anos de 2000 até 2016, o melhor país para preparar atletas mulheres medalhistas é os Estados Unidos, seguido de Rússia, China, Austrália e Alemanha. Analisando os IMCs dos atletas de ginástica, futebol, judô, atletismo e badminton, vê-se que há diferença entre os IMCs de cada esporte, sendo ginástica o esporte com menor média, tendo 22,58% ginastas abaixo do peso e judô com a maior, observando que nesse esporte 42,5% dos atletas estão acima do peso normal, ou seja o esporte do atleta influencia no seu IMC. Além disso, Michael Fred Phelps, Natalie Anne Coughlin e Ryan Steven Lochte, todos nadadores, são os maiores medalhistas por quantidade de cada tipo de medalha, sendo que há relação entre o medalhista e o tipo de medalha conquistada. Também podemos concluir que o peso e altura dos atletas são variáveis relacionadas, ou seja, quando a altura aumenta, o peso do atleta também aumenta.
