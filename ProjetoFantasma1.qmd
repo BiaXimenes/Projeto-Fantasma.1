@@ -342,21 +342,19 @@ banco_exel <- map_dfr(abas, ~ {
   return(dados)
 })
 
-#Removendo linhas duplicadas
-banco_exel <- unique(banco_exel)
-
 #Renomeando tipos de medalha
 banco_exel <- banco_exel %>%
   mutate(Medalha = recode(Medalha, "Gold" = "Ouro", "Silver" = "Prata", "Bronze" = "Bronze"))
 
 #Criando bancos para gráfico
 banco_grafico <- banco_exel %>%
-  filter(Sexo == "F") %>%  
-  group_by(País, Medalha) %>%   
-  summarise(Medalhas = n(), .groups = 'drop') %>% 
-  pivot_wider(names_from = Medalha, values_from = Medalhas, values_fill = 0) %>%  
-  mutate(Total = Ouro + Prata + Bronze)  
-
+   distinct(Nome, .keep_all = TRUE) %>%
+   filter(Sexo == "F") %>%  
+   group_by(País, Medalha) %>%   
+   summarise(Medalhas = n(), .groups = 'drop') %>% 
+   pivot_wider(names_from = Medalha, values_from = Medalhas, values_fill = list(Medalhas = 0)) %>%  
+   mutate(Total = coalesce(Ouro, 0) + coalesce(Prata, 0) + coalesce(Bronze, 0))  
+  
 classes <- banco_grafico %>%
   mutate(freq = Total) %>%  
   mutate(
@@ -471,6 +469,13 @@ ggsave("gráfico_boxplot.pdf", width = 158, height = 93, units = "mm")
 
 Boxplot do IMC
 :::
+
+```{r}
+df_sem_na <- banco_exel %>%
+  filter(!is.na(Idade))
+mean(df_sem_na$Idade)
+
+```
 
 ::: {#quad-quadro_resumo1 layout-align="center" quad-pos="H"}
 ```{=latex}
@@ -708,7 +713,8 @@ ggplot(banco_exel) +
   guides(fill = FALSE) +
   stat_summary(fun = "mean", geom = "point", shape = 23, size = 3, fill = "white") +
   labs(x = "", y = "Altura (cm)") +
-  scale_y_continuous(breaks = seq(100, 300, by = 50)) +  # Apenas uma chamada para scale_y_continuous
+  coord_cartesian(ylim = c(130, 230)) +
+  #scale_y_continuous(breaks = seq(100, 300, by = 50)) + 
   theme_estat()
 ggsave("boxplot_altura.pdf", width = 158, height = 93, units = "mm")
 
@@ -753,6 +759,8 @@ ggplot(banco_exel) +
   geom_boxplot(fill=c("#A11D21"), width = 0.5) +
   guides(fill=FALSE) +
   stat_summary(fun="mean", geom="point", shape=23, size=3, fill="white")+
+  #coord_cartesian(ylim = c(20, 220)) +
+  #scale_y_continuous(breaks = seq(20, 220, by = 50)) + 
   labs(x="", y="Peso(kg)")+
   theme_estat()
 ggsave("boxplot_peso.pdf", width = 158, height = 93, units = "mm")
