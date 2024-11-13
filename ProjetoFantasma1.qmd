@@ -198,17 +198,17 @@ Para a formulação de um teste, deve-se definir as hipóteses de interesse. Em 
 
 ### Tipos de Erros
 
-Ao realizar um teste de hipóteses, existem dois erros associados: **Erro do Tipo I** e **Erro do Tipo II**.
+Ao realizar um teste de hipóteses, existem dois erros associados: Erro do Tipo I e Erro do Tipo II.
 
 -   **Erro do Tipo I**:\
     Esse erro é caracterizado por rejeitar a hipótese nula ($H_{0}$) quando essa é verdadeira. A probabilidade associada a esse erro é denotada por $\alpha$, também conhecido como nível de significância do teste.
 
 -   **Erro do Tipo II**:\
-    Ao não rejeitar $H_{0}$ quando, na verdade, é falsa, está sendo cometido o **Erro do Tipo II**. A probabilidade de se cometer este erro é denotada por $\beta$.
+    Ao não rejeitar $H_{0}$ quando, na verdade, é falsa, está sendo cometido o Erro do Tipo II. A probabilidade de se cometer este erro é denotada por $\beta$.
 
 ### Nível de significância ($\alpha$)
 
-O nível de significância do teste é o nome dado à probabilidade de se rejeitar a hipótese nula quando essa é verdadeira; essa rejeição é chamada de **erro do tipo I**. O valor de $\alpha$ é fixado antes da extração da amostra e, usualmente, assume 5%, 1% ou 0,1%.
+O nível de significância do teste é o nome dado à probabilidade de se rejeitar a hipótese nula quando essa é verdadeira; essa rejeição é chamada de erro do tipo I. O valor de $\alpha$ é fixado antes da extração da amostra e, usualmente, assume 5%, 1% ou 0,1%.
 
 Por exemplo, um nível de significância de $\alpha=0,05$ (5%) significa que, se for tomada uma grande quantidade de amostras, em 5% delas a hipótese nula será rejeitada quando não havia evidências para essa rejeição, isto é, a probabilidade de se tomar a decisão correta é de 95%.
 
@@ -218,7 +218,7 @@ A estatística do teste é o estimador que será utilizado para testar se a hip�
 
 ### P-valor
 
-O **P-valor**, ou nível descritivo, é uma medida utilizada para sintetizar o resultado de um teste de hipóteses. Ele também pode ser chamado de *probabilidade de significância* do teste e indica a probabilidade de se obter um resultado da estatística de teste mais extremo do que o observado na presente amostra, considerando que a hipótese nula é verdadeira. Dessa forma, rejeita-se $H_{0}$ quando $P\text{-valor} < \alpha$, porque a chance de uma nova amostra possuir valores tão extremos quanto o encontrado é baixa, ou seja, há evidências para a rejeição da hipótese nula.
+O P-valor, ou nível descritivo, é uma medida utilizada para sintetizar o resultado de um teste de hipóteses. Ele também pode ser chamado de *probabilidade de significância* do teste e indica a probabilidade de se obter um resultado da estatística de teste mais extremo do que o observado na presente amostra, considerando que a hipótese nula é verdadeira. Dessa forma, rejeita-se $H_{0}$ quando $P\text{-valor} < \alpha$, porque a chance de uma nova amostra possuir valores tão extremos quanto o encontrado é baixa, ou seja, há evidências para a rejeição da hipótese nula.
 
 ### Intervalo de Confiança
 
@@ -291,7 +291,7 @@ $$\chi_{v}^{2} = \displaystyle\sum_{i=1}^r \sum_{j=1}^s \frac{ {(o_{ij} - e_{ij}
 
 Então, sob a hipótese de $H_{0}$ ser verdadeira, a estatística do teste seguirá a distribuição $\chi_{v}^{2}$.
 
-Para que a aproximação Qui-Quadrado seja satisfatória, é preciso que a amostra seja relativamente grande, com todos os valores esperados maiores ou iguais a 5 ou no máximo 20% deles seja menor que 5 com todos maiores que 1. Caso isso não ocorra, utiliza-se a correção de **Yates**.
+Para que a aproximação Qui-Quadrado seja satisfatória, é preciso que a amostra seja relativamente grande, com todos os valores esperados maiores ou iguais a 5 ou no máximo 20% deles seja menor que 5 com todos maiores que 1. Caso isso não ocorra, utiliza-se a correção de Yates.
 
 ### Coeficiente de Correlação de Pearson
 
@@ -346,15 +346,22 @@ banco_exel <- map_dfr(abas, ~ {
 banco_exel <- banco_exel %>%
   mutate(Medalha = recode(Medalha, "Gold" = "Ouro", "Silver" = "Prata", "Bronze" = "Bronze"))
 
+#Filtrando só medalhistas
+banco_exel <- banco_exel %>%
+  filter(Medalha %in% c("Ouro", "Prata", "Bronze"))
+
+```
+
+```{r}
 #Criando bancos para gráfico
 banco_grafico <- banco_exel %>%
-   distinct(Nome, .keep_all = TRUE) %>%
-   filter(Sexo == "F") %>%  
-   group_by(País, Medalha) %>%   
-   summarise(Medalhas = n(), .groups = 'drop') %>% 
-   pivot_wider(names_from = Medalha, values_from = Medalhas, values_fill = list(Medalhas = 0)) %>%  
-   mutate(Total = coalesce(Ouro, 0) + coalesce(Prata, 0) + coalesce(Bronze, 0))  
-  
+  filter(!duplicated(Nome)) %>%  
+  filter(Sexo == "F") %>%            
+  group_by(País, Medalha) %>%         
+  summarise(Medalhas = n(), .groups = 'drop') %>%  
+  pivot_wider(names_from = Medalha, values_from = Medalhas, values_fill = list(Medalhas=0)) %>%
+  mutate(Total = coalesce(Ouro, 0) + coalesce(Prata, 0) + coalesce(Bronze, 0)) 
+
 classes <- banco_grafico %>%
   mutate(freq = Total) %>%  
   mutate(
@@ -393,9 +400,9 @@ ggsave("grafico-barras1.pdf", width = 158, height = 93, units = "mm")
 Gráfico de colunas do total de medalhas de mulheres medalhistas
 :::
 
-É possível vizualizar a partir da @fig-grafico-barras1 que em primeiro lugar está os Estados Unidos, com o total de 741 medalhistas, seguido da Rússia com 416 medalhistas, seguido da China com 384 medalhistas, seguida da Austrália com 340 medalhistas, seguida da Alemanha com 268 medalhistas.
+É possível vizualizar a partir da @fig-grafico-barras1 que em primeiro lugar está os Estados Unidos, com o total de 433 medalhistas, seguido da Rússia com 298 medalhistas, seguido da China com 267 medalhistas, seguida da Austrália com 219 medalhistas, seguida da Alemanha com 188 medalhistas.
 
-É possível ver uma diferença entre os 5 primeiros países, sendo os Estados Unidos com 325 medalhas a mais que o segundo colocado e 473 medalhas a mais que o quinto colocado, diferença essa maior que qualquer total de medalhas de outro país. Assim, os Estados Unidos tem mais medalhas que a soma do total de medalhas que a Rússia e Alemanha juntas. Dessa forma, conclui-se que os Estados Unidos é um país que prepara com excelência as atletas para as Olimpíadas.
+É possível ver uma diferença entre os 5 primeiros países, sendo os Estados Unidos com 145 medalhas a mais que o segundo colocado e 255 medalhas a mais que o quinto colocado, diferença essa maior que qualquer total de medalhas de outro país. Assim, os Estados Unidos tem mais medalhas que a soma do total de medalhas que a Austrália e Alemanha juntas. Dessa forma, conclui-se que os Estados Unidos é um país que prepara com excelência as atletas para as Olimpíadas.
 
 Além disso, é possível ver que não há diferença entre a Rússia, China e Austrália quanto o total de mulheres medalhistas, visto que sua diferença entre as medalhas é baixa. Dessa forma, esses países se equivalem na preparação de atletas medalhistas.
 
@@ -469,13 +476,6 @@ ggsave("gráfico_boxplot.pdf", width = 158, height = 93, units = "mm")
 
 Boxplot do IMC
 :::
-
-```{r}
-df_sem_na <- banco_exel %>%
-  filter(!is.na(Idade))
-mean(df_sem_na$Idade)
-
-```
 
 ::: {#quad-quadro_resumo1 layout-align="center" quad-pos="H"}
 ```{=latex}
@@ -714,7 +714,6 @@ ggplot(banco_exel) +
   stat_summary(fun = "mean", geom = "point", shape = 23, size = 3, fill = "white") +
   labs(x = "", y = "Altura (cm)") +
   coord_cartesian(ylim = c(130, 230)) +
-  #scale_y_continuous(breaks = seq(100, 300, by = 50)) + 
   theme_estat()
 ggsave("boxplot_altura.pdf", width = 158, height = 93, units = "mm")
 
@@ -759,8 +758,7 @@ ggplot(banco_exel) +
   geom_boxplot(fill=c("#A11D21"), width = 0.5) +
   guides(fill=FALSE) +
   stat_summary(fun="mean", geom="point", shape=23, size=3, fill="white")+
-  #coord_cartesian(ylim = c(20, 220)) +
-  #scale_y_continuous(breaks = seq(20, 220, by = 50)) + 
+  coord_cartesian(ylim = c(20, 220)) +
   labs(x="", y="Peso(kg)")+
   theme_estat()
 ggsave("boxplot_peso.pdf", width = 158, height = 93, units = "mm")
